@@ -24,6 +24,7 @@ public:
 	//temp display function
 	void Show() 
 	{
+		system("cls");
 		for (int x = 0; x < _width; x++)
 		{
 			for (int y = 0; y < _height; y++)

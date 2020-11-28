@@ -1,6 +1,4 @@
-#include "Level.h"
-#include "Player.h"
-#include <Windows.h>
+#include "Game.h"
 
 //for drawing
 //void gotoxy(short x, short y)
@@ -11,14 +9,8 @@
 
 int main()
 {
-	Level* level = new Level("level1.level");
-	level->Show();
-
-	delete level;
-
-	//EntityTile t = EntityTile('o', true, { 0,0 });
-	//Entity* entity = new Entity({ t });
-	////Map m = Map("map1.map");
+	Game game = Game({ "level1.level", "level1.level" });
+	game.Start();
 
 	return 0;
 }

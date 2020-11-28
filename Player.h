@@ -14,6 +14,6 @@ public:
 	void LoseHp(int amount);
 	void Die();
 	void Move(Position directionVector);
-	bool CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const;
+	//bool CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const;
 };
 

@@ -22,27 +22,24 @@ void Player::Die()
 	_dead = true;
 }
 
-bool Player::CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const
-{
-	for (EntityTile const& tile : _body)
-	{
-		Position destinationPosition = { tile.TilePosition() + desiredPosition };
-		if (destinationPosition < topLeftBounding or destinationPosition > bottomRightBounding)
-		{
-			return false;
-		}
-	}
+//bool Player::CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const
+//{
+//	for (EntityTile const& tile : _body)
+//	{
+//		Position destinationPosition = { tile.TilePosition() + desiredPosition };
+//		if (destinationPosition < topLeftBounding or destinationPosition > bottomRightBounding)
+//		{
+//			return false;
+//		}
+//	}
+//
+//	return true;
+//}
 
-	return true;
-}
-
-void Player::Move(Position direvtionVector)
+void Player::Move(Position direvtionVector) //obstacles vector too
 {
-	if (true)//change this to if can move to (...)
+	for (EntityTile& tile : _body)
 	{
-		for (EntityTile& tile : _body)
-		{
-			tile.TilePosition() += direvtionVector;
-		}
+		tile.TilePosition() += direvtionVector;
 	}
 }

@@ -2,7 +2,6 @@
 #include "EntityTile.h"
 #include "Map.h"
 #include <vector>
-#include <algorithm>
 
 class Entity
 {
