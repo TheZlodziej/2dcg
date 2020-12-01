@@ -8,6 +8,7 @@ protected:
 	Position _position;
 public:
 	EntityTile(char character, bool collidable, Position position);
-	Position TilePosition() const;
+	Position GetPosition() const;
+	void SetPosition(Position position);
 };
 

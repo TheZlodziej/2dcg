@@ -16,7 +16,9 @@ public:
 	~Level();
 	void Load(const std::string filename); // loads .level file
 	void LoadMap(int mapIndex); // changes _currentMapIndex and set _map to new Map
-	
+	Player* GetPlayer();
+	Map* GetMap();
+
 	//temp tylko tutaj layers beda na pewno
 	void Show()
 	{

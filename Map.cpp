@@ -38,6 +38,7 @@ void Map::Load(const std::string filename)
 	_map = map;
 	_height = _map[0].size();
 	_width = _map.size();
+	_originalMap = _map;
 }
 
 Tile& Map::At(Position position)  
@@ -48,4 +49,19 @@ Tile& Map::At(Position position)
 std::vector<Position> Map::GetCollidingPositions()
 {
 	return _collidingPositions;
+}
+
+void Map::UpdateMap(std::vector<EntityTile> oldState, std::vector<EntityTile> newState)
+{
+	for (EntityTile const& tile : oldState)
+	{
+		Position tilePosition = tile.GetPosition();
+		_map[tilePosition.x][tilePosition.y] = _originalMap[tilePosition.x][tilePosition.y];
+	}
+
+	for (EntityTile const& tile : newState)
+	{
+		Position tilePosition = tile.GetPosition();
+		_map[tilePosition.x][tilePosition.y] = tile;
+	}
 }

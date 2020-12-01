@@ -5,7 +5,12 @@ EntityTile::EntityTile(char character, bool collidable, Position position): Tile
 	_position = position;
 }
 
-Position EntityTile::TilePosition() const
+Position EntityTile::GetPosition() const
 {
 	return _position;
+}
+
+void EntityTile::SetPosition(Position newPosition)
+{
+	_position = newPosition;
 }

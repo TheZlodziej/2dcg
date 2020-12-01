@@ -11,6 +11,7 @@ class Map
 {
 private:
 	std::vector<std::vector<EntityTile>> _map;
+	std::vector<std::vector<EntityTile>> _originalMap;
 	std::vector<Position> _collidingPositions;
 	int _width;
 	int _height;
@@ -20,6 +21,7 @@ public:
 	Tile& At(Position position); // return Tile at given position
 	void Load(const std::string filename);
 	std::vector<Position> GetCollidingPositions();
+	void UpdateMap(std::vector<EntityTile> oldState, std::vector<EntityTile> newState);
 
 	//temp display function
 	void Show() 

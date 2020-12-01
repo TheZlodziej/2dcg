@@ -22,6 +22,11 @@ void Player::Die()
 	_dead = true;
 }
 
+bool Player::Dead() const
+{
+	return _dead;
+}
+
 //bool Player::CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const
 //{
 //	for (EntityTile const& tile : _body)
@@ -36,10 +41,20 @@ void Player::Die()
 //	return true;
 //}
 
-void Player::Move(Position direvtionVector) //obstacles vector too
+void Player::SetDirection(Position direction)
+{
+	_direction = direction;
+}
+
+Position Player::GetDirection() const
+{
+	return _direction;
+}
+
+void Player::Update()
 {
 	for (EntityTile& tile : _body)
 	{
-		tile.TilePosition() += direvtionVector;
+		tile.SetPosition(tile.GetPosition() + _direction);
 	}
 }

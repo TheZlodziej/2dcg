@@ -13,9 +13,9 @@ public:
 	Game(std::vector<std::string> filenames);
 	~Game();
 	void LoadLevel(int levelIndex);
-	void Start();
-	void KeyboardInput(); //thread
 	void Update();
+	void GameLoop();
+	void Start();
 	bool SelectionScreen();
 };
 

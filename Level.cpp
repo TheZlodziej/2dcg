@@ -72,3 +72,13 @@ void Level::LoadMap(int mapIndex)
 	_map = new Map(_maps[_currentMapIndex]);
 	
 }
+
+Player* Level::GetPlayer()
+{
+	return _player;
+}
+
+Map* Level::GetMap()
+{
+	return _map;
+}

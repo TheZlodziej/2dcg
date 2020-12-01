@@ -19,16 +19,6 @@ void Game::LoadLevel(int levelIndex)
 	_currentLevel = new Level(_levels[_currentLevelIndex]);
 }
 
-void Game::KeyboardInput()
-{
-	return; //this will be lambda inside Update()
-}
-
-void Game::Update()
-{
-	return; //move this into Start()?
-}
-
 bool Game::SelectionScreen()
 {
 	int selection = 0; // selection: 0=start; 1=change leve; 2=exit
@@ -89,13 +79,83 @@ bool Game::SelectionScreen()
 	}
 }
 
+void Game::Update()
+{
+	return;
+}
+
+void Game::GameLoop()
+{
+	auto KeyboardInput = [this](bool& keyPressed) {
+		Position direction = { 0,0 };
+		
+		if (GetAsyncKeyState(VK_UP) and 0x26)
+		{
+			//up arrow
+			direction.x = -1;
+			keyPressed = true;
+		}
+
+		if (GetAsyncKeyState(VK_DOWN) and 0x28)
+		{
+			//down arrow
+			direction.x = 1;
+			keyPressed = true;
+		}
+
+		if (GetAsyncKeyState(VK_RIGHT) and 0x27)
+		{
+			//right arrow
+			direction.y = 1;
+			keyPressed = true;
+		}
+
+		if (GetAsyncKeyState(VK_LEFT) and 0x25)
+		{
+			//left arrow
+			direction.y = -1;
+			keyPressed = true;
+		}
+
+		if (keyPressed)
+		{
+			_currentLevel->GetPlayer()->SetDirection(direction);
+		}
+	};
+
+	auto Update = [this]() {
+		std::vector<EntityTile> oldState = _currentLevel->GetPlayer()->GetBody();
+		_currentLevel->GetPlayer()->Update();
+		std::vector<EntityTile> newState = _currentLevel->GetPlayer()->GetBody();
+		//check if move possible
+		_currentLevel->GetMap()->UpdateMap(oldState, newState);
+		_currentLevel->GetMap()->Show();
+		//call draw function
+	};
+
+	while (!_currentLevel->GetPlayer()->Dead())
+	{
+		//std::thread keyboardInput(keyboardInputLambda, keyPressed);
+		//std::thread update(updateLambda, keyPressed);
+		bool keyPressed = false;
+		KeyboardInput(keyPressed);
+
+		if (keyPressed)
+		{
+			keyPressed = false;
+			Update();
+		}
+
+		Sleep(30); //change for chrono
+	}
+}
+
 void Game::Start()
 {
 	if (!SelectionScreen()) // false if exit was selected;
 	{
 		return;
 	}
-
-	//game loop
-	_currentLevel->Show();
+	_currentLevel->GetMap()->Show();
+	GameLoop();
 }

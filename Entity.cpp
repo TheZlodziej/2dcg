@@ -6,7 +6,7 @@ Entity::Entity(std::vector<EntityTile> body)
 	{
 		if (tile.Collidable())
 		{
-			_collidingPositions.push_back(tile.TilePosition());
+			_collidingPositions.push_back(tile.GetPosition());
 		}
 	}
 }
