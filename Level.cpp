@@ -1,5 +1,5 @@
 #include "Level.h"
-
+#include <Windows.h>
 Level::Level(const std::string filename)
 {
 	Load(filename);
@@ -52,7 +52,8 @@ void Level::Load(const std::string filename)
 		for (int i = 0; i < bodyTilesNumber; i++)
 		{
 			body.push_back(EntityTile(playerData[1], playerData[2], { std::stoi(playerData.substr(3, playerData.find(',') - 3)), std::stoi(playerData.substr(playerData.find(',') + 1, playerData.find(']') - playerData.find(',') - 1)) }));
-			playerData = playerData.substr(0, playerData.find(']')+1);
+			std::size_t startPos = playerData.substr(1, playerData.size() - 1).find(']') + 2; //ignore first '[' and find next, then add 2 to find starting position
+			playerData = playerData.substr(startPos, playerData.size()-1);
 		}
 
 		int maxHp;

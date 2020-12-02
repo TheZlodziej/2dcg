@@ -156,6 +156,7 @@ void Game::Start()
 	{
 		return;
 	}
+
 	_currentLevel->GetMap()->Show();
 	GameLoop();
 }
