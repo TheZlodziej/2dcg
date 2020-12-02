@@ -5,6 +5,7 @@ class Tile {
 protected:
 	char _character;
 	bool _collidable;
+
 public:
 	Tile(char character, bool collidable);
 	char GetCharacter() const;

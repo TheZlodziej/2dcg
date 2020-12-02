@@ -9,7 +9,7 @@
 
 int main()
 {
-	Game game = Game({ "level1.level", "level1.level" });
+	Game game = Game({ "level1.level", "level2.level" });
 	game.Start();
 
 	return 0;

@@ -79,5 +79,8 @@
     <None Include="map2.map">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="level2.level">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
