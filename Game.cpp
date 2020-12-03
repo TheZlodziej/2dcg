@@ -1,16 +1,16 @@
 #include "Game.h"
-#include <Windows.h>
-#include <thread>
-#include <chrono>
 
-Game::Game(std::vector<std::string> filenames)
+Game::Game(std::vector<std::string> filenames, float frameRate)
 {
 	_levels = filenames;
+	_frameRate = frameRate;
+	_timer = new Timer();
 }
 
 Game::~Game()
 {
 	delete _currentLevel;
+	delete _timer;
 }
 
 void Game::LoadLevel(int levelIndex)
@@ -24,6 +24,7 @@ bool Game::SelectionScreen()
 	int selection = 0; // selection: 0=start; 1=change leve; 2=exit
 	int optionsNumber = 3;
 	int levelIndex = _currentLevelIndex;
+	bool keyPressed = false;
 
 	auto printSelectionScreen = [&selection, &levelIndex]() {
 		system("cls");
@@ -35,48 +36,57 @@ bool Game::SelectionScreen()
 		std::cout << "//..........................................//" << std::endl;
 		std::cout << "//..........................................//";
 	};
-
 	printSelectionScreen();
 
 	while (true)
 	{
-
-		// up arrow
-		if (GetAsyncKeyState(VK_UP) and 0x26)
+		_timer->Tick();
+		if (_timer->DeltaTime() >= 1.0f / _frameRate)
 		{
-			selection = ((selection - 1) % optionsNumber) < 0 ? optionsNumber - 1 : selection - 1;
-			printSelectionScreen();
-		}
-
-		// down arrow
-		else if (GetAsyncKeyState(VK_DOWN) and 0x28)
-		{
-			selection = (selection + 1) % optionsNumber;
-			printSelectionScreen();
-		}
-
-		// enter
-		else if (GetAsyncKeyState(VK_RETURN) and 0x0D)
-		{
-			switch (selection)
+			// up arrow
+			if (GetAsyncKeyState(VK_UP) and 0x26)
 			{
-			case 0:
-				LoadLevel(levelIndex);
-				return true;
-
-			case 1:
-				levelIndex = (levelIndex + 1) % _levels.size();
-				break;
-
-			case 2:
-				return false;
+				keyPressed = true;
+				selection = ((selection - 1) % optionsNumber) < 0 ? optionsNumber - 1 : selection - 1;
+				printSelectionScreen();
 			}
 
-			printSelectionScreen();
-		}
+			// down arrow
+			else if (GetAsyncKeyState(VK_DOWN) and 0x28)
+			{
+				keyPressed = true;
+				selection = (selection + 1) % optionsNumber;
+				printSelectionScreen();
+			}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(50)); // sleep to avoid multiple input
+			// enter
+			else if (GetAsyncKeyState(VK_RETURN) and 0x0D)
+			{
+				keyPressed = true;
+				switch (selection)
+				{
+				case 0:
+					LoadLevel(levelIndex);
+					return true;
+
+				case 1:
+					levelIndex = (levelIndex + 1) % _levels.size();
+					break;
+
+				case 2:
+					return false;
+				}
+			}
+
+			if (keyPressed)
+			{
+				keyPressed = false;
+				printSelectionScreen();
+			}
+		}
 	}
+
+	return false;
 }
 
 void Game::Update()
@@ -133,20 +143,24 @@ void Game::GameLoop()
 		//call draw function
 	};
 
+
 	while (!_currentLevel->GetPlayer()->Dead())
 	{
 		//std::thread keyboardInput(keyboardInputLambda, keyPressed);
 		//std::thread update(updateLambda, keyPressed);
-		bool keyPressed = false;
-		KeyboardInput(keyPressed);
-
-		if (keyPressed)
+		_timer->Tick();
+		
+		if (_timer->DeltaTime() >= 1.0f / _frameRate)
 		{
-			keyPressed = false;
-			Update();
-		}
+			bool keyPressed = false;
+			KeyboardInput(keyPressed);
 
-		Sleep(30); //change for chrono
+			if (keyPressed)
+			{
+				keyPressed = false;
+				Update();
+			}
+		}
 	}
 }
 

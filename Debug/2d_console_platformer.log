@@ -1,8 +1,2 @@
-﻿  Entity.cpp
-  Game.cpp
-  Level.cpp
-  Map.cpp
-  Player.cpp
-  main.cpp
-  Generating Code...
+﻿  Game.cpp
   2d_console_platformer.vcxproj -> C:\Users\TheZl\source\repos\2d_console_platformer\Debug\2d_console_platformer.exe
