@@ -1,2 +1,5 @@
-﻿  Game.cpp
+﻿  Level.cpp
+  Map.cpp
+  Generating Code...
+C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\Map.cpp(95): warning C4717: 'Map::CollidingWith': recursive on all control paths, function will cause runtime stack overflow
   2d_console_platformer.vcxproj -> C:\Users\TheZl\source\repos\2d_console_platformer\Debug\2d_console_platformer.exe

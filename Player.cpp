@@ -6,6 +6,7 @@ Player::Player(std::vector<EntityTile> body, int maxHp) : Entity(body)
 	_maxHp = maxHp;
 	_currentHp = _maxHp;
 	_dead = false;
+	SetCollidingPositions();
 }
 
 void Player::LoseHp(int amount)
@@ -27,20 +28,6 @@ bool Player::Dead() const
 	return _dead;
 }
 
-//bool Player::CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const
-//{
-//	for (EntityTile const& tile : _body)
-//	{
-//		Position destinationPosition = { tile.TilePosition() + desiredPosition };
-//		if (destinationPosition < topLeftBounding or destinationPosition > bottomRightBounding)
-//		{
-//			return false;
-//		}
-//	}
-//
-//	return true;
-//}
-
 void Player::SetDirection(Position direction)
 {
 	_direction = direction;
@@ -56,5 +43,7 @@ void Player::Update()
 	for (EntityTile& tile : _body)
 	{
 		tile.SetPosition(tile.GetPosition() + _direction);
+		std::vector<Position> newCollidingPositions;
+		SetCollidingPositions();
 	}
 }

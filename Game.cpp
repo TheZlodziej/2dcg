@@ -96,34 +96,34 @@ void Game::Update()
 
 void Game::GameLoop()
 {
-	auto KeyboardInput = [this](bool& keyPressed) {
-		Position direction = { 0,0 };
+	auto KeyboardInput = [this](bool& keyPressed, Position& direction) {
+		direction = { 0,0 };
 		
 		if (GetAsyncKeyState(VK_UP) and 0x26)
 		{
 			//up arrow
-			direction.x = -1;
+			direction.y = -1;
 			keyPressed = true;
 		}
 
 		if (GetAsyncKeyState(VK_DOWN) and 0x28)
 		{
 			//down arrow
-			direction.x = 1;
+			direction.y = 1;
 			keyPressed = true;
 		}
 
 		if (GetAsyncKeyState(VK_RIGHT) and 0x27)
 		{
 			//right arrow
-			direction.y = 1;
+			direction.x = 1;
 			keyPressed = true;
 		}
 
 		if (GetAsyncKeyState(VK_LEFT) and 0x25)
 		{
 			//left arrow
-			direction.y = -1;
+			direction.x = -1;
 			keyPressed = true;
 		}
 
@@ -133,14 +133,33 @@ void Game::GameLoop()
 		}
 	};
 
-	auto Update = [this]() {
-		std::vector<EntityTile> oldState = _currentLevel->GetPlayer()->GetBody();
-		_currentLevel->GetPlayer()->Update();
-		std::vector<EntityTile> newState = _currentLevel->GetPlayer()->GetBody();
-		//check if move possible
-		_currentLevel->GetMap()->UpdateMap(oldState, newState);
-		_currentLevel->GetMap()->Show();
+	auto Update = [this](Position& direction) {
+		//check if player move is possible
+		//add InBoundings() check
+		bool movePossible;
+		std::vector<Position> newPlayerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
+
+		for (Position& position : newPlayerPositions)
+		{
+			position += direction;
+		}
+
+		movePossible = !_currentLevel->GetMap()->CollidingWith(newPlayerPositions);
+		
+		if (movePossible)
+		{
+			//set player direction
+			_currentLevel->GetPlayer()->SetDirection(direction);
+
+			std::vector<EntityTile> oldState = _currentLevel->GetPlayer()->GetBody();
+			_currentLevel->GetPlayer()->Update();
+			std::vector<EntityTile> newState = _currentLevel->GetPlayer()->GetBody();
+
+			_currentLevel->GetMap()->UpdateMap(oldState, newState);
+		}
+
 		//call draw function
+		_currentLevel->GetMap()->Show();
 	};
 
 
@@ -152,13 +171,15 @@ void Game::GameLoop()
 		
 		if (_timer->DeltaTime() >= 1.0f / _frameRate)
 		{
+			Position direction = { 0,0 };
 			bool keyPressed = false;
-			KeyboardInput(keyPressed);
+
+			KeyboardInput(keyPressed, direction);
 
 			if (keyPressed)
 			{
 				keyPressed = false;
-				Update();
+				Update(direction);
 			}
 		}
 	}

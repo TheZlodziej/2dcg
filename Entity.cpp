@@ -2,6 +2,12 @@
 
 Entity::Entity(std::vector<EntityTile> body) 
 {
+	//SetCollidingPositions(); ??? does it need to be here
+}
+
+void Entity::SetCollidingPositions()
+{
+	_collidingPositions = {};
 	for (EntityTile const& tile : _body)
 	{
 		if (tile.Collidable())
@@ -16,7 +22,7 @@ std::vector<EntityTile> Entity::GetBody() const
 	return _body;
 }
 
-std::vector<Position> Entity::GetCollidingPositions()
+std::vector<Position> Entity::GetCollidingPositions() const
 {
 	return _collidingPositions;
 }
