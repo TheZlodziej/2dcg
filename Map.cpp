@@ -12,30 +12,41 @@ void Map::Load(const std::string filename)
 
 	if (file.good())
 	{
-		std::string tileData;
-		file>>tileData;
-		_width = std::stoi(tileData.substr(1, tileData.find(',') - 1));
-		_height = std::stoi(tileData.substr(tileData.find(',') + 1, tileData.find(']') - tileData.find(',') - 1));
-
-		for (int i=0; i < _height; i++)
+		try
 		{
-			std::vector<EntityTile> row;
+			std::string tileData;
+			file >> tileData;
+			_width = std::stoi(tileData.substr(1, tileData.find(',') - 1));
+			_height = std::stoi(tileData.substr(tileData.find(',') + 1, tileData.find(']') - tileData.find(',') - 1));
 
-			for (int j=0; j < _width; j++)
+			for (int i = 0; i < _height; i++)
 			{
-				file>>tileData;
-				row.push_back(EntityTile(tileData[0], (tileData[1] == 'c'), { j, i })); //if c == collidable
+				std::vector<EntityTile> row;
+				
+				for (int j = 0; j < _width; j++)
+				{
+					if (!(file >> tileData))
+					{
+						throw new Exception(0, "[MAP] '" + filename + "' has invalid input.");
+					}
+					row.push_back(EntityTile(tileData[0], (tileData[1] == 'c'), { j, i })); //if c == collidable
+				}
+				InversedMap.push_back(row);
+				while ((file.peek() != '\n') && (file >> tileData)); //prevents oversized file input (ignores more characters than should be given)
 			}
-			InversedMap.push_back(row);
 		}
-
+		catch (Exception* exception)
+		{
+			exception->Display();
+			delete exception;
+		}
 	}
 
 	std::vector<std::vector<EntityTile>> map;
 	for (int i = 0; i < _width; i++)
 	{
 		std::vector<EntityTile> column;
-		
+
 		for (int j = 0; j < _height; j++)
 		{
 			column.push_back(InversedMap[j][i]);

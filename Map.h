@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "EntityTile.h"
+#include "Exception.h"
 
 //temp library for displaying
 #include <iostream>
