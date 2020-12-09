@@ -1,6 +1,6 @@
 #include "Level.h"
 #include <Windows.h>
-Level::Level(const std::string filename)
+Level::Level(const std::string& filename)
 {
 	Load(filename);
 	LoadMap(0);
@@ -12,7 +12,7 @@ Level::~Level()
 	delete _player;
 }
 
-void Level::Load(const std::string filename)
+void Level::Load(const std::string& filename)
 {
 	std::ifstream file(filename);
 
@@ -72,9 +72,9 @@ void Level::Load(const std::string filename)
 
 void Level::LoadMap(int mapIndex)
 {
+	//open file here and send it to map
 	_currentMapIndex = mapIndex;
-	_map = new Map(_maps[_currentMapIndex]);
-	
+	_map = new Map(_maps[_currentMapIndex]);	
 }
 
 Player* Level::GetPlayer()

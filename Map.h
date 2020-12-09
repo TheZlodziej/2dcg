@@ -18,16 +18,16 @@ private:
 	int _height;
 
 public:
-	Map(const std::string filename);
-	Tile& At(Position position); // return Tile at given position
-	void Load(const std::string filename);
+	Map(const std::string& filename);
+	Tile& At(Position position); // returns Tile at given position
+	void Load(const std::string& filename);
 	std::vector<Position> GetCollidingPositions();
-	void UpdateMap(std::vector<EntityTile> oldState, std::vector<EntityTile> newState);
-	bool CollidingWith(std::vector<EntityTile> tiles) const;
-	bool CollidingWith(std::vector<Position> positions) const;
-	bool CollidingWith(Position position) const;
-	bool CollidingWith(EntityTile tile) const;
-	bool InBoundings(Position position) const;
+	void UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<EntityTile>& newState);
+	bool CollidingWith(const std::vector<EntityTile>& tiles) const;
+	bool CollidingWith(const std::vector<Position>& positions) const;
+	bool CollidingWith(const Position& position) const;
+	bool CollidingWith(const EntityTile& tile) const;
+	bool InBoundings(const Position& position) const;
 
 	//temp display function
 	void Show() 

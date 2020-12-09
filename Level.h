@@ -12,9 +12,9 @@ private:
 
 public:
 
-	Level(const std::string filename); //filename to level settings
+	Level(const std::string& filename); //filename to level settings
 	~Level();
-	void Load(const std::string filename); // loads .level file
+	void Load(const std::string& filename); // loads .level file
 	void LoadMap(int mapIndex); // changes _currentMapIndex and set _map to new Map
 	Player* GetPlayer();
 	Map* GetMap();
