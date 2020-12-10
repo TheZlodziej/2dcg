@@ -3,8 +3,8 @@
 #include <iostream>
 #include <Windows.h>
 
-// #0 - map input error
-//
+// #0 - file input error
+// #1 - file open error
 //
 
 class Exception

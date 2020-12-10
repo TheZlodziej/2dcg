@@ -15,9 +15,9 @@ protected:
 	float _frameRate;
 
 public:
-	Game(std::vector<std::string> filenames, float frameRate=30);
+	Game(const std::vector<std::string>& filenames, const float& frameRate=30);
 	~Game();
-	void LoadLevel(int levelIndex);
+	void LoadLevel(const int& levelIndex);
 	void Update();
 	void GameLoop();
 	void Start();

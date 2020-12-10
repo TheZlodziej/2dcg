@@ -27,7 +27,7 @@ void Map::Load(std::istream& mapStream)
 			std::string tileData;
 			if (!(row >> tileData))
 			{
-				throw new Exception(0, "[MAP] invalid file input - not enough data.");
+				throw new Exception(0, "[MAP] invalid file input - not enough tiles data.");
 			}
 			
 			map[j][i] = EntityTile(tileData[0], (tileData[1] == 'c'), { j, i }); //if c == collidable
@@ -43,12 +43,12 @@ void Map::Load(std::istream& mapStream)
 	_originalMap = _map;
 }
 
-Tile& Map::At(Position position)  
+Tile& Map::At(const Position& position)  
 { 
 	return _map[position.x][position.y]; 
 }
 
-std::vector<Position> Map::GetCollidingPositions()
+std::vector<Position> Map::GetCollidingPositions() const
 {
 	return _collidingPositions;
 }

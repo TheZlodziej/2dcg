@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(std::vector<std::string> filenames, float frameRate)
+Game::Game(const std::vector<std::string>& filenames, const float& frameRate)
 {
 	_levels = filenames;
 	_frameRate = frameRate;
@@ -13,7 +13,7 @@ Game::~Game()
 	delete _timer;
 }
 
-void Game::LoadLevel(int levelIndex)
+void Game::LoadLevel(const int& levelIndex)
 {
 	_currentLevelIndex = levelIndex;
 
@@ -22,6 +22,10 @@ void Game::LoadLevel(int levelIndex)
 	if (levelStream.good())
 	{
 		_currentLevel = new Level(levelStream);
+	}
+	else
+	{
+		throw new Exception(1, "[LEVEL] file open error");
 	}
 
 	levelStream.close();

@@ -20,9 +20,9 @@ private:
 
 public:
 	Map(std::istream& mapStream);
-	Tile& At(Position position); // returns Tile at given position
+	Tile& At(const Position& position); // returns address of Tile at given position
 	void Load(std::istream& mapStream);
-	std::vector<Position> GetCollidingPositions();
+	std::vector<Position> GetCollidingPositions() const;
 	void UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<EntityTile>& newState);
 	bool CollidingWith(const std::vector<EntityTile>& tiles) const;
 	bool CollidingWith(const std::vector<Position>& positions) const;

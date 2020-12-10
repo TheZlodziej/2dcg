@@ -12,11 +12,11 @@ protected:
 
 public:
 	Player(std::vector<EntityTile> body, int maxHp);
-	void LoseHp(int amount);
+	void LoseHp(const int& amount);
 	void Die();
 	bool Dead() const;
 	void Update();
-	void SetDirection(Position direction);
+	void SetDirection(const Position& direction);
 	Position GetDirection() const;
 	//bool CanMoveTo(Position desiredPosition, Position topLeftBounding, Position bottomRightBounding) const;
 };

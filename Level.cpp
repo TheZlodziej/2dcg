@@ -27,11 +27,12 @@ void Level::Load(std::istream& levelStream)
 	std::string mapsNumberLine;
 	std::getline(levelStream, mapsNumberLine);
 	int mapsNumber = std::stoi(mapsNumberLine);
+	//check if correct map data
 
 	for (int i = 0; i < mapsNumber; i++)
 	{
 		std::string mapPath;
-		std::getline(levelStream, mapPath); //possible blank space in path
+		std::getline(levelStream, mapPath);
 		_maps.push_back(mapPath);
 	}
 
@@ -43,13 +44,20 @@ void Level::Load(std::istream& levelStream)
 	std::stringstream playerData(playerInput);
 
 	int bodyTilesNumber;
-	playerData >> bodyTilesNumber;
+	if (!(playerData >> bodyTilesNumber))
+	{
+		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+	}
 
 	std::vector<EntityTile> body;
 	for (int i = 0; i < bodyTilesNumber; i++)
 	{
 		std::string playerTileData;
-		playerData >> playerTileData;
+		
+		if (!(playerData >> playerTileData))
+		{
+			throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+		}
 
 		char character = playerTileData[1];
 		bool collidable = playerTileData[2] == 'c';
@@ -58,21 +66,30 @@ void Level::Load(std::istream& levelStream)
 	}
 
 	int maxHp;
-	playerData >> maxHp;
+	if (!(playerData >> maxHp))
+	{
+		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+	}
 
 	_player = new Player(body, maxHp);
 	//...
 }
 
-void Level::LoadMap(int mapIndex)
+void Level::LoadMap(const int& mapIndex)
 {
 	_currentMapIndex = mapIndex;
 
 	std::ifstream mapStream(_maps[_currentMapIndex]);
+	
 	if (mapStream.good())
 	{
 		_map = new Map(mapStream);
 	}
+	else
+	{
+		throw new Exception(1, "[MAP] file open error");
+	}
+
 	mapStream.close();
 }
 

@@ -10,7 +10,7 @@ Position EntityTile::GetPosition() const
 	return _position;
 }
 
-void EntityTile::SetPosition(Position newPosition)
+void EntityTile::SetPosition(const Position& newPosition)
 {
 	_position = newPosition;
 }

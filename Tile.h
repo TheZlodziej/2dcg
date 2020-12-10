@@ -7,8 +7,8 @@ protected:
 	bool _collidable;
 
 public:
-	Tile(char character, bool collidable);
+	Tile(const char& character, const bool& collidable);
 	char GetCharacter() const;
-	void SetCharacter(char newCharacter);
+	void SetCharacter(const char& newCharacter);
 	bool Collidable() const;
 };

@@ -27,7 +27,7 @@ std::vector<Position> Entity::GetCollidingPositions() const
 	return _collidingPositions;
 }
 
-bool Entity::CollidingWith(std::vector<Position> positions) 
+bool Entity::CollidingWith(const std::vector<Position>& positions) const 
 {
 	for (Position const& positionA : positions)
 	{
@@ -43,13 +43,13 @@ bool Entity::CollidingWith(std::vector<Position> positions)
 	return false;
 }
 
-bool Entity::CollidingWith(Entity* entity) 
+bool Entity::CollidingWith(const Entity* entity) const
 {
 	std::vector<Position> positions = entity->GetCollidingPositions();
 	return CollidingWith(positions);
 }
 
-bool Entity::CollidingWith(Map* map) 
+bool Entity::CollidingWith(const Map* map) const
 {
 	std::vector<Position> positions = map->GetCollidingPositions();
 	return CollidingWith(positions);

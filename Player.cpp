@@ -9,7 +9,7 @@ Player::Player(std::vector<EntityTile> body, int maxHp) : Entity(body)
 	SetCollidingPositions();
 }
 
-void Player::LoseHp(int amount)
+void Player::LoseHp(const int& amount)
 {
 	_currentHp -= amount;
 	if (_currentHp <= 0)
@@ -28,7 +28,7 @@ bool Player::Dead() const
 	return _dead;
 }
 
-void Player::SetDirection(Position direction)
+void Player::SetDirection(const Position& direction)
 {
 	_direction = direction;
 }

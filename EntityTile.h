@@ -9,6 +9,6 @@ protected:
 public:
 	EntityTile(char character, bool collidable, Position position);
 	Position GetPosition() const;
-	void SetPosition(Position position);
+	void SetPosition(const Position& position);
 };
 
