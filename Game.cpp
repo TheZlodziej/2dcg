@@ -16,7 +16,15 @@ Game::~Game()
 void Game::LoadLevel(int levelIndex)
 {
 	_currentLevelIndex = levelIndex;
-	_currentLevel = new Level(_levels[_currentLevelIndex]);
+
+	std::ifstream levelStream(_levels[_currentLevelIndex]);
+
+	if (levelStream.good())
+	{
+		_currentLevel = new Level(levelStream);
+	}
+
+	levelStream.close();
 }
 
 bool Game::SelectionScreen()

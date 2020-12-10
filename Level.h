@@ -1,6 +1,9 @@
 #pragma once
 #include "Map.h"
 #include "Player.h"
+#include <fstream>
+#include <sstream>
+#include <Windows.h>
 
 class Level
 {
@@ -12,9 +15,9 @@ private:
 
 public:
 
-	Level(const std::string& filename); //filename to level settings
+	Level(std::istream& levelStream); //filename to level settings
 	~Level();
-	void Load(const std::string& filename); // loads .level file
+	void Load(std::istream& levelStream); // loads .level file
 	void LoadMap(int mapIndex); // changes _currentMapIndex and set _map to new Map
 	Player* GetPlayer();
 	Map* GetMap();

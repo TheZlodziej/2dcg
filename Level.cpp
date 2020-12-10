@@ -1,8 +1,8 @@
 #include "Level.h"
-#include <Windows.h>
-Level::Level(const std::string& filename)
+
+Level::Level(std::istream& levelStream)
 {
-	Load(filename);
+	Load(levelStream);
 	LoadMap(0);
 }
 
@@ -12,69 +12,68 @@ Level::~Level()
 	delete _player;
 }
 
-void Level::Load(const std::string& filename)
+void Level::Load(std::istream& levelStream)
 {
-	std::ifstream file(filename);
 
-	if (file.good())
+	// maps number
+	// map path
+	// player
+	// ...
+
+	//map
+		//maps number
+		//maps paths
+
+	std::string mapsNumberLine;
+	std::getline(levelStream, mapsNumberLine);
+	int mapsNumber = std::stoi(mapsNumberLine);
+
+	for (int i = 0; i < mapsNumber; i++)
 	{
-		// maps number
-		// map path
-		// player
-		// ...
-
-		//map
-			//maps number
-			//maps paths
-		int mapsNumber;
-		file >> mapsNumber;
-		file.ignore(); //for getline()
-
-		for (int i = 0; i < mapsNumber; i++)
-		{
-			std::string mapPath;
-			std::getline(file, mapPath); //possible blank space in path
-			_maps.push_back(mapPath);
-		}
-
-		//player
-			//player body tiles number
-			//player body tiles
-				//[//tile character//collidable//x,y//]//...// hp//
-
-		int bodyTilesNumber;
-		file >> bodyTilesNumber;
-
-		std::string playerData;
-		file >> playerData;
-
-		std::vector<EntityTile> body;
-		for (int i = 0; i < bodyTilesNumber; i++)
-		{
-			char character = playerData[1];
-			bool collidable = playerData[2] == 'c';
-			Position position = { std::stoi(playerData.substr(3, playerData.find(',') - 3)), std::stoi(playerData.substr(playerData.find(',') + 1, playerData.find(']') - playerData.find(',') - 1)) };
-			body.push_back(EntityTile(character, collidable, position));
-			std::size_t startPos = playerData.substr(1, playerData.size() - 1).find(']') + 2; //ignore first '[' and find next, then add 2 to find starting position
-			playerData = playerData.substr(startPos, playerData.size()-1);
-		}
-
-		int maxHp;
-		file >> maxHp;
-
-		_player = new Player(body, maxHp);
-
-		//...
+		std::string mapPath;
+		std::getline(levelStream, mapPath); //possible blank space in path
+		_maps.push_back(mapPath);
 	}
 
-	file.close();
+	//player
+		//player body tiles number (tiles:) //[//tile character//collidable//x,y//] //...// hp//
+
+	std::string playerInput;
+	std::getline(levelStream, playerInput);
+	std::stringstream playerData(playerInput);
+
+	int bodyTilesNumber;
+	playerData >> bodyTilesNumber;
+
+	std::vector<EntityTile> body;
+	for (int i = 0; i < bodyTilesNumber; i++)
+	{
+		std::string playerTileData;
+		playerData >> playerTileData;
+
+		char character = playerTileData[1];
+		bool collidable = playerTileData[2] == 'c';
+		Position position = { std::stoi(playerTileData.substr(3, playerTileData.find(',') - 3)), std::stoi(playerTileData.substr(playerTileData.find(',') + 1, playerTileData.find(']') - playerTileData.find(',') - 1)) };
+		body.push_back(EntityTile(character, collidable, position));
+	}
+
+	int maxHp;
+	playerData >> maxHp;
+
+	_player = new Player(body, maxHp);
+	//...
 }
 
 void Level::LoadMap(int mapIndex)
 {
-	//open file here and send it to map
 	_currentMapIndex = mapIndex;
-	_map = new Map(_maps[_currentMapIndex]);	
+
+	std::ifstream mapStream(_maps[_currentMapIndex]);
+	if (mapStream.good())
+	{
+		_map = new Map(mapStream);
+	}
+	mapStream.close();
 }
 
 Player* Level::GetPlayer()

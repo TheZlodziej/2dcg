@@ -1,58 +1,44 @@
 #include "Map.h"
 
-Map::Map(const std::string& filename)
+Map::Map(std::istream& mapStream)
 {
-	Load(filename);
+	Load(mapStream);
 }
 
-void Map::Load(const std::string& filename)
+void Map::Load(std::istream& mapStream)
 {
-	std::ifstream file(filename);
-	std::vector<std::vector<EntityTile>> inversedMap;
+	std::string mapSizeLine;
+	std::getline(mapStream, mapSizeLine);
+	std::stringstream mapSize(mapSizeLine);
+	mapSize >> _width;
+	mapSize >> _height;
 
-	if (file.good())
+	std::vector<std::vector<EntityTile>> map(_width, std::vector<EntityTile>(_height, EntityTile('*', false, {0,0})));
+
+	for (int i = 0; i < _height; i++)
 	{
-		std::string tileData;
-		file >> tileData;
-		_width = std::stoi(tileData.substr(1, tileData.find(',') - 1));
-		_height = std::stoi(tileData.substr(tileData.find(',') + 1, tileData.find(']') - tileData.find(',') - 1));
+		//std::vector<EntityTile> row;
+		std::string rowLine;
+		std::getline(mapStream, rowLine);
+		std::stringstream row(rowLine);
 
-		for (int i = 0; i < _height; i++)
+		for (int j = 0; j < _width; j++)
 		{
-			std::vector<EntityTile> row;
-				
-			for (int j = 0; j < _width; j++)
+			std::string tileData;
+			if (!(row >> tileData))
 			{
-				if (!(file >> tileData)) //getline & string stream instead
-				{
-					throw new Exception(0, "[MAP] '" + filename + "' has invalid input.");
-				}
-				row.push_back(EntityTile(tileData[0], (tileData[1] == 'c'), { j, i })); //if c == collidable
+				throw new Exception(0, "[MAP] invalid file input - not enough data.");
 			}
-			inversedMap.push_back(row);
-			while ((file.peek() != '\n') && (file >> tileData)); //prevents oversized file input (ignores more characters than should be given)
+			
+			map[j][i] = EntityTile(tileData[0], (tileData[1] == 'c'), { j, i }); //if c == collidable
+			
+			if (map[j][i].Collidable())
+			{
+				_collidingPositions.push_back({ j,i });
+			}
 		}
 	}
 
-	std::vector<std::vector<EntityTile>> map;
-	for (int i = 0; i < _width; i++)
-	{
-		std::vector<EntityTile> column;
-
-		for (int j = 0; j < _height; j++)
-		{
-			column.push_back(inversedMap[j][i]);
-			if (inversedMap[j][i].Collidable())
-			{
-				_collidingPositions.push_back(inversedMap[j][i].GetPosition());
-			}
-		}
-
-
-		map.push_back(column);
-	}
-
-	file.close();
 	_map = map;
 	_originalMap = _map;
 }

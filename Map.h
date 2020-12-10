@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include "EntityTile.h"
 #include "Exception.h"
 
@@ -18,9 +19,9 @@ private:
 	int _height;
 
 public:
-	Map(const std::string& filename);
+	Map(std::istream& mapStream);
 	Tile& At(Position position); // returns Tile at given position
-	void Load(const std::string& filename);
+	void Load(std::istream& mapStream);
 	std::vector<Position> GetCollidingPositions();
 	void UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<EntityTile>& newState);
 	bool CollidingWith(const std::vector<EntityTile>& tiles) const;

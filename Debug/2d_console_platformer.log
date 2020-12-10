@@ -1,5 +1,3 @@
-﻿  main.cpp
-C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\main.cpp(16,7): error C2065: 'dupa2': undeclared identifier
-C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\main.cpp(16,18): error C2065: 'dupa1': undeclared identifier
-C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\main.cpp(16,27): error C2660: 'dupa': function does not take 1 arguments
-C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\main.cpp(9,6): message : see declaration of 'dupa'
+﻿  Map.cpp
+C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\Map.cpp(84): warning C4717: 'Map::CollidingWith': recursive on all control paths, function will cause runtime stack overflow
+  2d_console_platformer.vcxproj -> C:\Users\TheZl\source\repos\2d_console_platformer\Debug\2d_console_platformer.exe
