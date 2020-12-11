@@ -16,6 +16,11 @@ Game::~Game()
 void Game::LoadLevel(const int& levelIndex)
 {
 	_currentLevelIndex = levelIndex;
+	
+	if (_currentLevelIndex >= int(_levels.size()) or _currentLevelIndex < 0)
+	{
+		throw new Exception(3, "[LEVEL] level index out of size.");
+	}
 
 	std::ifstream levelStream(_levels[_currentLevelIndex]);
 
@@ -157,7 +162,7 @@ void Game::GameLoop()
 		}
 
 		movePossible = !_currentLevel->GetMap()->CollidingWith(newPlayerPositions);
-		
+
 		if (movePossible)
 		{
 			//set player direction

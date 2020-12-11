@@ -31,7 +31,7 @@ void Map::Load(std::istream& mapStream)
 			}
 			
 			map[j][i] = EntityTile(tileData[0], (tileData[1] == 'c'), { j, i }); //if c == collidable
-			
+
 			if (map[j][i].Collidable())
 			{
 				_collidingPositions.push_back({ j,i });

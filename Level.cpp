@@ -78,6 +78,10 @@ void Level::Load(std::istream& levelStream)
 void Level::LoadMap(const int& mapIndex)
 {
 	_currentMapIndex = mapIndex;
+	if (_currentMapIndex >= int(_maps.size()) or _currentMapIndex < 0)
+	{
+		throw new Exception(2, "[MAP] map index out of siez.");
+	}
 
 	std::ifstream mapStream(_maps[_currentMapIndex]);
 	
@@ -87,7 +91,7 @@ void Level::LoadMap(const int& mapIndex)
 	}
 	else
 	{
-		throw new Exception(1, "[MAP] file open error");
+		throw new Exception(1, "[MAP] file open error.");
 	}
 
 	mapStream.close();

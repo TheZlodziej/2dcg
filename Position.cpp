@@ -17,16 +17,6 @@ Position& Position::operator+=(Position const& a)
 	return *this;
 }
 
-bool Position::operator<(Position const& a) const
-{
-	return (this->x < a.x or this->y < a.y);
-}
-
-bool Position::operator>(Position const& a) const
-{
-	return (this->x > a.x or this->y > a.y);
-}
-
 Position Position::operator-(void)
 {
 	return { -this->x, -this->y };
