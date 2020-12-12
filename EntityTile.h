@@ -1,15 +1,14 @@
 #pragma once
 #include "Tile.h"
-#include "Position.h"
+#include "Option.h"
 
 class EntityTile : public Tile
 {
-protected:
-	Position _position;
+private:
+	std::vector<Option> _options;
 
 public:
-	EntityTile(char character, bool collidable, Position position);
-	Position GetPosition() const;
-	void SetPosition(const Position& position);
+	EntityTile(const char& character, const Position& position, const std::vector<Option>& options);
+	Option GetOption(const OPTION& optionName) const; // returns option with optionName = OPTION_ERROR if not found
 };
 

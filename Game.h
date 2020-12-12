@@ -18,7 +18,6 @@ public:
 	Game(const std::vector<std::string>& filenames, const float& frameRate=30);
 	~Game();
 	void LoadLevel(const int& levelIndex);
-	void Update();
 	void GameLoop();
 	void Start();
 	bool SelectionScreen();

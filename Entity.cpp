@@ -10,7 +10,7 @@ void Entity::SetCollidingPositions()
 	_collidingPositions = {};
 	for (EntityTile const& tile : _body)
 	{
-		if (tile.Collidable())
+		if (tile.GetOption(OPTION::COLLIDABLE).optionName != OPTION::OPTION_ERROR)
 		{
 			_collidingPositions.push_back(tile.GetPosition());
 		}

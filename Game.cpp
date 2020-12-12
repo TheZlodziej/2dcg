@@ -106,11 +106,6 @@ bool Game::SelectionScreen()
 	return false;
 }
 
-void Game::Update()
-{
-	return;
-}
-
 void Game::GameLoop()
 {
 	auto KeyboardInput = [this](bool& keyPressed, Position& direction) {

@@ -60,9 +60,9 @@ void Level::Load(std::istream& levelStream)
 		}
 
 		char character = playerTileData[1];
-		bool collidable = playerTileData[2] == 'c';
-		Position position = { std::stoi(playerTileData.substr(3, playerTileData.find(',') - 3)), std::stoi(playerTileData.substr(playerTileData.find(',') + 1, playerTileData.find(']') - playerTileData.find(',') - 1)) };
-		body.push_back(EntityTile(character, collidable, position));
+
+		Position position = { std::stoi(playerTileData.substr(2, playerTileData.find(',') - 2)), std::stoi(playerTileData.substr(playerTileData.find(',') + 1, playerTileData.find(']') - playerTileData.find(',') - 1)) };
+		body.push_back(EntityTile(character, position, { { OPTION::COLLIDABLE, {} } }));
 	}
 
 	int maxHp;

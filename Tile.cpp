@@ -1,9 +1,9 @@
 #include "Tile.h"
 
-Tile::Tile(const char& character, const bool& collidable)
+Tile::Tile(const char& character, const Position& position)
 {
 	_character = character;
-	_collidable = collidable;
+	_position = position;
 }
 
 char Tile::GetCharacter() const 
@@ -16,7 +16,12 @@ void Tile::SetCharacter(const char& newCharacter)
 	_character = newCharacter; 
 }
 
-bool Tile::Collidable() const
+Position Tile::GetPosition() const
 {
-	return _collidable;
+	return _position;
+}
+
+void Tile::SetPosition(const Position& newPosition)
+{
+	_position = newPosition;
 }

@@ -1,16 +1,19 @@
 #include "EntityTile.h"
 
-EntityTile::EntityTile(char character, bool collidable, Position position): Tile(character, collidable)
+EntityTile::EntityTile(const char& character, const Position& position, const std::vector<Option>& options): Tile(character, position)
 {
-	_position = position;
+	_options = options;
 }
 
-Position EntityTile::GetPosition() const
+Option EntityTile::GetOption(const OPTION& optionName) const
 {
-	return _position;
-}
+	for (const Option& option : _options)
+	{
+		if (option.optionName == optionName)
+		{
+			return option;
+		}
+	}
 
-void EntityTile::SetPosition(const Position& newPosition)
-{
-	_position = newPosition;
+	return { OPTION::OPTION_ERROR, {} };
 }

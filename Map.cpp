@@ -13,7 +13,7 @@ void Map::Load(std::istream& mapStream)
 	mapSize >> _width;
 	mapSize >> _height;
 
-	std::vector<std::vector<EntityTile>> map(_width, std::vector<EntityTile>(_height, EntityTile('*', false, {0,0})));
+	std::vector<std::vector<EntityTile>> map(_width, std::vector<EntityTile>(_height, EntityTile('*', { 0,0 }, {})));
 
 	for (int i = 0; i < _height; i++)
 	{
@@ -30,9 +30,44 @@ void Map::Load(std::istream& mapStream)
 				throw new Exception(0, "[MAP] invalid file input - not enough tiles data.");
 			}
 			
-			map[j][i] = EntityTile(tileData[0], (tileData[1] == 'c'), { j, i }); //if c == collidable
+			std::vector<Option> options;
+			std::istringstream optionsStream(tileData.substr(1));
+			std::string option;
+			while (std::getline(optionsStream, option, '/'))
+			{
+				std::vector<int> arguments = {};
+				OPTION optionName = OPTION::OPTION_ERROR;
+				std::istringstream argumentsStream(option.substr(1));
+				std::string argument;
+				while (std::getline(argumentsStream, argument, ','))
+				{
+					arguments.push_back(std::stoi(argument));
+				}
 
-			if (map[j][i].Collidable())
+				switch (option[0])
+				{
+				case 'c':
+					optionName = OPTION::COLLIDABLE;
+					break;
+
+				case 'n':
+					optionName = OPTION::NON_COLLIDABLE;
+					break;
+
+				case 's':
+					optionName = OPTION::SWITCH_MAP;
+					break;
+
+				default:
+					optionName = OPTION::OPTION_ERROR;
+				}
+
+				options.push_back({ optionName, arguments });
+			}
+			
+			map[j][i] = EntityTile(tileData[0], { j, i }, options);
+
+			if (map[j][i].GetOption(OPTION::COLLIDABLE).optionName != OPTION::OPTION_ERROR)
 			{
 				_collidingPositions.push_back({ j,i });
 			}
@@ -43,7 +78,7 @@ void Map::Load(std::istream& mapStream)
 	_originalMap = _map;
 }
 
-Tile& Map::At(const Position& position)  
+EntityTile& Map::At(const Position& position)
 { 
 	return _map[position.x][position.y]; 
 }
@@ -100,12 +135,12 @@ void Map::UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<E
 	for (EntityTile const& tile : oldState)
 	{
 		Position tilePosition = tile.GetPosition();
-		_map[tilePosition.x][tilePosition.y] = _originalMap[tilePosition.x][tilePosition.y];
+		At(tilePosition) = _originalMap[tilePosition.x][tilePosition.y];
 	}
 
 	for (EntityTile const& tile : newState)
 	{
 		Position tilePosition = tile.GetPosition();
-		_map[tilePosition.x][tilePosition.y] = tile;
+		At(tilePosition) = tile;
 	}
 }

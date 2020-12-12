@@ -4,11 +4,12 @@
 class Tile {
 protected:
 	char _character;
-	bool _collidable;
+	Position _position;
 
 public:
-	Tile(const char& character, const bool& collidable);
+	Tile(const char& character, const Position& position);
 	char GetCharacter() const;
 	void SetCharacter(const char& newCharacter);
-	bool Collidable() const;
+	Position GetPosition() const;
+	void SetPosition(const Position& position);
 };
