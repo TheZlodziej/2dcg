@@ -7,7 +7,7 @@ class Player : public Entity
 protected:
 	int _maxHp;
 	int _currentHp;
-	bool _dead = false;
+	bool _dead;
 	Position _direction;
 
 public:

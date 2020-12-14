@@ -19,5 +19,6 @@ public:
 	std::vector<EntityTile> GetBody() const;
 	EntityTile TopLeft() const;
 	void SetPosition(Position& position);
+	EntityTile Lowest() const;
 };
 

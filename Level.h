@@ -25,11 +25,5 @@ public:
 	Map* GetMap();
 	void AssignOptionTiles();
 	std::vector<EntityTile> GetOptionTiles() const;
-
-	//add layers here
-	void Show()
-	{
-		_map->Show();
-	}
 };
 

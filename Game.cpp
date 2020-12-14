@@ -130,17 +130,23 @@ void Game::CheckOptions()
 				_currentLevel->LoadMap(option.arguments[0]);
 				_currentLevel->GetPlayer()->SetPosition(newPlayerPosition);
 				Update({0,0});
-				Draw();
+				_currentLevel->GetMap()->Show();
 			}
 			//else if(tile.GetOption(OPTION::...)) etc..
 		}
 	}
 }
 
-void Game::Draw()
+void Game::ApplyGravity()
 {
-	//layers here?
-	_currentLevel->GetMap()->Show();
+	Position direction = { 0,1 };
+	_currentLevel->GetPlayer()->SetDirection(direction);
+	std::vector<Position> playerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
+
+	if (MovePossible(playerPositions, direction))
+	{
+		Update(direction);
+	}
 }
 
 void Game::Update(const Position& direction)
@@ -155,40 +161,32 @@ void Game::Update(const Position& direction)
 	_currentLevel->GetMap()->UpdateMap(oldState, newState);
 }
 
-void Game::KeyboardInput(bool& keyPressed, Position& direction)
+void Game::KeyboardInput(Position& direction)
 {
 	direction = { 0,0 };
+
 	if (GetAsyncKeyState(VK_UP) and 0x26)
 	{
 		//up arrow
 		direction.y = -1;
-		keyPressed = true;
 	}
 
 	if (GetAsyncKeyState(VK_DOWN) and 0x28)
 	{
 		//down arrow
 		direction.y = 1;
-		keyPressed = true;
 	}
 
 	if (GetAsyncKeyState(VK_RIGHT) and 0x27)
 	{
 		//right arrow
 		direction.x = 1;
-		keyPressed = true;
 	}
 
 	if (GetAsyncKeyState(VK_LEFT) and 0x25)
 	{
 		//left arrow
 		direction.x = -1;
-		keyPressed = true;
-	}
-
-	if (keyPressed)
-	{
-		_currentLevel->GetPlayer()->SetDirection(direction);
 	}
 }
 
@@ -200,24 +198,19 @@ void Game::GameLoop()
 		
 		if (_timer->DeltaTime() >= 1.0f / _frameRate)
 		{
-			Position direction = { 0,0 };
-			bool keyPressed = false;
+			Position direction;
+			KeyboardInput(direction);
+			std::this_thread::sleep_for(std::chrono::milliseconds(30));
+			
+			_currentLevel->GetPlayer()->SetDirection(direction);
+			std::vector<Position> playerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
 
-			KeyboardInput(keyPressed, direction);
-
-			if (keyPressed)
+			if (MovePossible(playerPositions, direction)) //if didnt hit any collidables and is in boundings
 			{
-				keyPressed = false;
-				std::vector<Position> newPlayerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
-
-				if (MovePossible(newPlayerPositions, direction)) //if didnt hit any collidables and is in boundings
-				{
-					Update(direction);
-				}
-
-				Draw();
+				Update(direction);
 			}
 
+			ApplyGravity();
 			CheckOptions();
 		}
 	}

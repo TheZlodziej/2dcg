@@ -136,12 +136,14 @@ void Map::UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<E
 	{
 		Position tilePosition = tile.GetPosition();
 		At(tilePosition) = _originalMap[tilePosition.x][tilePosition.y];
+		Draw(tilePosition, _originalMap[tilePosition.x][tilePosition.y].GetCharacter());
 	}
 
 	for (EntityTile const& tile : newState)
 	{
 		Position tilePosition = tile.GetPosition();
 		At(tilePosition) = tile;
+		Draw(tilePosition, tile.GetCharacter());
 	}
 }
 
@@ -153,4 +155,30 @@ int Map::GetHeight() const
 int Map::GetWidth() const
 {
 	return _width;
+}
+
+void Map::GotoPosition(Position position) const
+{
+	COORD coord = { short(position.x), short(position.y) };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void Map::Draw(const Position& position, const char& character) const
+{
+	GotoPosition(position);
+	std::cout << character;
+	GotoPosition({ _width - 1, _height - 1 });
+}
+
+void Map::Show()
+{
+	system("cls");
+	for (int y = 0; y < _height; y++)
+	{
+		for (int x = 0; x < _width; x++)
+		{
+			std::cout << At({ x,y }).GetCharacter();
+		}
+		std::cout << "\n";
+	}
 }

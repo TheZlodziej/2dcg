@@ -85,9 +85,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="map1.map">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="map2.map">
       <Filter>Resource Files</Filter>
     </None>
@@ -95,6 +92,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="level1.level">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="map1.map">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

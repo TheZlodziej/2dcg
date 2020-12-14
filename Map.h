@@ -31,19 +31,8 @@ public:
 	bool InBoundings(const Position& position) const;
 	int GetHeight() const;
 	int GetWidth() const;
-
-	//temp display function
-	void Show() 
-	{
-		system("cls");
-		for (int y = 0; y < _height; y++)
-		{
-			for (int x = 0; x < _width; x++)
-			{
-				std::cout << At({ x,y }).GetCharacter() << " ";
-			}
-			std::cout << "\n";
-		}
-	}
+	void GotoPosition(Position position) const;
+	void Draw(const Position& position, const char& character) const;
+	void Show();
 };
 

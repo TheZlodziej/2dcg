@@ -21,11 +21,11 @@ public:
 	void LoadLevel(const int& levelIndex);
 	void GameLoop();
 	void Update(const Position& direction);
-	void KeyboardInput(bool& keyPressed, Position& direction);
+	void KeyboardInput(Position& direction);
 	bool MovePossible(std::vector<Position>& positions, const Position& direction);
 	void Start();
-	void Draw();
 	void CheckOptions();
 	bool SelectionScreen();
+	void ApplyGravity();
 };
 

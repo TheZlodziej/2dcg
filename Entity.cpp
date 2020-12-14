@@ -79,3 +79,18 @@ EntityTile Entity::TopLeft() const
 
 	return topLeft;
 }
+
+EntityTile Entity::Lowest() const
+{
+	EntityTile lowest = _body[0];
+
+	for (const EntityTile& tile : _body)
+	{
+		if (tile.GetPosition().y < lowest.GetPosition().y)
+		{
+			lowest = tile;
+		}
+	}
+
+	return lowest;
+}
