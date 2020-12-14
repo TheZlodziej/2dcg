@@ -10,5 +10,6 @@ private:
 public:
 	EntityTile(const char& character, const Position& position, const std::vector<Option>& options);
 	Option GetOption(const OPTION& optionName) const; // returns option with optionName = OPTION_ERROR if not found
+	std::vector<Option> GetOptions() const;
 };
 

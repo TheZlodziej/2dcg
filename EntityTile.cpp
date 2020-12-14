@@ -17,3 +17,8 @@ Option EntityTile::GetOption(const OPTION& optionName) const
 
 	return { OPTION::OPTION_ERROR, {} };
 }
+
+std::vector<Option> EntityTile::GetOptions() const
+{
+	return _options;
+}

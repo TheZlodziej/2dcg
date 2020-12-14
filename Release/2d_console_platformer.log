@@ -1,0 +1,16 @@
+﻿  Entity.cpp
+  EntityTile.cpp
+  Exception.cpp
+  Game.cpp
+  Level.cpp
+  main.cpp
+  Map.cpp
+  Player.cpp
+  Position.cpp
+  Tile.cpp
+  Timer.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 793 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  2d_console_platformer.vcxproj -> C:\Users\TheZl\source\repos\2d_console_platformer\Release\2d_console_platformer.exe

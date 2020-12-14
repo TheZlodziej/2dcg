@@ -1,8 +1,10 @@
 #include "Entity.h"
 
-Entity::Entity(std::vector<EntityTile> body) 
+Entity::Entity(const std::vector<EntityTile>& body) 
 {
 	//SetCollidingPositions(); ??? does it need to be here
+	_body = body;
+	SetCollidingPositions();
 }
 
 void Entity::SetCollidingPositions()
@@ -43,14 +45,37 @@ bool Entity::CollidingWith(const std::vector<Position>& positions) const
 	return false;
 }
 
-bool Entity::CollidingWith(const Entity* entity) const
+bool Entity::CollidingWith(const EntityTile& tile) const
 {
-	std::vector<Position> positions = entity->GetCollidingPositions();
-	return CollidingWith(positions);
+	return CollidingWith({ tile.GetPosition() });
 }
 
-bool Entity::CollidingWith(const Map* map) const
+bool Entity::CollidingWith(const Entity& entity) const
 {
-	std::vector<Position> positions = map->GetCollidingPositions();
-	return CollidingWith(positions);
+	return CollidingWith(entity.GetCollidingPositions());
+}
+
+void Entity::SetPosition(Position& position)
+{
+	Position deltaPosition = position - TopLeft().GetPosition();
+
+	for (EntityTile& tile : _body)
+	{
+		tile.SetPosition(tile.GetPosition() + deltaPosition);
+	}
+}
+
+EntityTile Entity::TopLeft() const
+{
+	EntityTile topLeft = _body[0];
+
+	for (const EntityTile& tile : _body)
+	{
+		if (tile.GetPosition() < topLeft.GetPosition())
+		{
+			topLeft = tile;
+		}
+	}
+
+	return topLeft;
 }

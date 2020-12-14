@@ -1,12 +1,11 @@
 #include "Player.h"
 
-Player::Player(std::vector<EntityTile> body, int maxHp) : Entity(body)
+Player::Player(const std::vector<EntityTile>& body, const int& maxHp) : Entity(body)
 {
-	_body = body;
 	_maxHp = maxHp;
 	_currentHp = _maxHp;
 	_dead = false;
-	SetCollidingPositions();
+	_direction = { 0,0 };
 }
 
 void Player::LoseHp(const int& amount)

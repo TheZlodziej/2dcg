@@ -97,6 +97,7 @@ bool Game::SelectionScreen()
 
 			if (keyPressed)
 			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				keyPressed = false;
 				printSelectionScreen();
 			}
@@ -106,79 +107,95 @@ bool Game::SelectionScreen()
 	return false;
 }
 
+bool Game::MovePossible(std::vector<Position>& positions, const Position& direction)
+{
+	for (Position& position : positions)
+	{
+		position += direction;
+	}
+
+	return !_currentLevel->GetMap()->CollidingWith(positions);
+}
+
+void Game::CheckOptions()
+{
+	for (const EntityTile& tile : _currentLevel->GetOptionTiles())
+	{
+		if (_currentLevel->GetPlayer()->CollidingWith(tile))
+		{
+			Option option = tile.GetOption(OPTION::SWITCH_MAP);
+			if (option.optionName != OPTION::OPTION_ERROR)
+			{
+				Position newPlayerPosition = { option.arguments[1], option.arguments[2] };
+				_currentLevel->LoadMap(option.arguments[0]);
+				_currentLevel->GetPlayer()->SetPosition(newPlayerPosition);
+				Update({0,0});
+				Draw();
+			}
+			//else if(tile.GetOption(OPTION::...)) etc..
+		}
+	}
+}
+
+void Game::Draw()
+{
+	//layers here?
+	_currentLevel->GetMap()->Show();
+}
+
+void Game::Update(const Position& direction)
+{
+	//set player direction
+	_currentLevel->GetPlayer()->SetDirection(direction);
+
+	std::vector<EntityTile> oldState = _currentLevel->GetPlayer()->GetBody();
+	_currentLevel->GetPlayer()->Update();
+	std::vector<EntityTile> newState = _currentLevel->GetPlayer()->GetBody();
+
+	_currentLevel->GetMap()->UpdateMap(oldState, newState);
+}
+
+void Game::KeyboardInput(bool& keyPressed, Position& direction)
+{
+	direction = { 0,0 };
+	if (GetAsyncKeyState(VK_UP) and 0x26)
+	{
+		//up arrow
+		direction.y = -1;
+		keyPressed = true;
+	}
+
+	if (GetAsyncKeyState(VK_DOWN) and 0x28)
+	{
+		//down arrow
+		direction.y = 1;
+		keyPressed = true;
+	}
+
+	if (GetAsyncKeyState(VK_RIGHT) and 0x27)
+	{
+		//right arrow
+		direction.x = 1;
+		keyPressed = true;
+	}
+
+	if (GetAsyncKeyState(VK_LEFT) and 0x25)
+	{
+		//left arrow
+		direction.x = -1;
+		keyPressed = true;
+	}
+
+	if (keyPressed)
+	{
+		_currentLevel->GetPlayer()->SetDirection(direction);
+	}
+}
+
 void Game::GameLoop()
 {
-	auto KeyboardInput = [this](bool& keyPressed, Position& direction) {
-		direction = { 0,0 };
-		
-		if (GetAsyncKeyState(VK_UP) and 0x26)
-		{
-			//up arrow
-			direction.y = -1;
-			keyPressed = true;
-		}
-
-		if (GetAsyncKeyState(VK_DOWN) and 0x28)
-		{
-			//down arrow
-			direction.y = 1;
-			keyPressed = true;
-		}
-
-		if (GetAsyncKeyState(VK_RIGHT) and 0x27)
-		{
-			//right arrow
-			direction.x = 1;
-			keyPressed = true;
-		}
-
-		if (GetAsyncKeyState(VK_LEFT) and 0x25)
-		{
-			//left arrow
-			direction.x = -1;
-			keyPressed = true;
-		}
-
-		if (keyPressed)
-		{
-			_currentLevel->GetPlayer()->SetDirection(direction);
-		}
-	};
-
-	auto Update = [this](Position& direction) {
-		//check if player move is possible
-		//add InBoundings() check
-		bool movePossible;
-		std::vector<Position> newPlayerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
-
-		for (Position& position : newPlayerPositions)
-		{
-			position += direction;
-		}
-
-		movePossible = !_currentLevel->GetMap()->CollidingWith(newPlayerPositions);
-
-		if (movePossible)
-		{
-			//set player direction
-			_currentLevel->GetPlayer()->SetDirection(direction);
-
-			std::vector<EntityTile> oldState = _currentLevel->GetPlayer()->GetBody();
-			_currentLevel->GetPlayer()->Update();
-			std::vector<EntityTile> newState = _currentLevel->GetPlayer()->GetBody();
-
-			_currentLevel->GetMap()->UpdateMap(oldState, newState);
-		}
-
-		//call draw function
-		_currentLevel->GetMap()->Show();
-	};
-
-
 	while (!_currentLevel->GetPlayer()->Dead())
 	{
-		//std::thread keyboardInput(keyboardInputLambda, keyPressed);
-		//std::thread update(updateLambda, keyPressed);
 		_timer->Tick();
 		
 		if (_timer->DeltaTime() >= 1.0f / _frameRate)
@@ -191,8 +208,17 @@ void Game::GameLoop()
 			if (keyPressed)
 			{
 				keyPressed = false;
-				Update(direction);
+				std::vector<Position> newPlayerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
+
+				if (MovePossible(newPlayerPositions, direction)) //if didnt hit any collidables and is in boundings
+				{
+					Update(direction);
+				}
+
+				Draw();
 			}
+
+			CheckOptions();
 		}
 	}
 }
@@ -204,6 +230,7 @@ void Game::Start()
 		return;
 	}
 
+	Update({ 0,0 });
 	_currentLevel->GetMap()->Show();
 	GameLoop();
 }

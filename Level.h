@@ -13,6 +13,7 @@ private:
 	std::vector<std::string> _maps; //for different rooms
 	int _currentMapIndex;
 	Player* _player = nullptr;
+	std::vector<EntityTile> _optionTiles;
 
 public:
 
@@ -22,6 +23,8 @@ public:
 	void LoadMap(const int& mapIndex); //changes _currentMapIndex and set _map to new Map
 	Player* GetPlayer();
 	Map* GetMap();
+	void AssignOptionTiles();
+	std::vector<EntityTile> GetOptionTiles() const;
 
 	//add layers here
 	void Show()

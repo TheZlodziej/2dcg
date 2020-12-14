@@ -144,3 +144,13 @@ void Map::UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<E
 		At(tilePosition) = tile;
 	}
 }
+
+int Map::GetHeight() const
+{
+	return _height;
+}
+
+int Map::GetWidth() const
+{
+	return _width;
+}

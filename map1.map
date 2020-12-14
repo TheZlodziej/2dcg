@@ -1,12 +1,12 @@
 10 11
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n os1
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
-.n .n .n .n .n .n .n .n .n .n
+. . . . _ _ . . . .
+. . . / . . \ . . .
+. . . | - - | . . .
+. . . | . . | . . .
+. . . | . . | . . xs1,0,0
+. . . | . . | . . .
+. . . | . . | . . .
+. . / . . . . \ . .
+. . | . . . . | . .
+. . \ _ / \ _ / . .
 #c #c #c #c #c #c #c #c #c #c

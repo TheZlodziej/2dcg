@@ -80,7 +80,7 @@ void Level::LoadMap(const int& mapIndex)
 	_currentMapIndex = mapIndex;
 	if (_currentMapIndex >= int(_maps.size()) or _currentMapIndex < 0)
 	{
-		throw new Exception(2, "[MAP] map index out of siez.");
+		throw new Exception(2, "[MAP] map index out of size.");
 	}
 
 	std::ifstream mapStream(_maps[_currentMapIndex]);
@@ -88,6 +88,7 @@ void Level::LoadMap(const int& mapIndex)
 	if (mapStream.good())
 	{
 		_map = new Map(mapStream);
+		AssignOptionTiles();
 	}
 	else
 	{
@@ -105,4 +106,25 @@ Player* Level::GetPlayer()
 Map* Level::GetMap()
 {
 	return _map;
+}
+
+void Level::AssignOptionTiles()
+{
+	_optionTiles = {};
+
+	for (int i = 0; i < _map->GetWidth(); i++)
+	{
+		for (int j = 0; j < _map->GetHeight(); j++)
+		{
+			if (_map->At({ i, j }).GetOptions().size() > 0)
+			{
+				_optionTiles.push_back(_map->At({ i,j }));
+			}
+		}
+	}
+}
+
+std::vector<EntityTile> Level::GetOptionTiles() const
+{
+	return _optionTiles;
 }

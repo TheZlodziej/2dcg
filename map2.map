@@ -1,11 +1,11 @@
 16 10
-.n .n .n .n .n .n .n .n .n .n .n .n .n .n .n #c
-.n .n .n .n .n .n .n .n .n .n .n .n .n .n .n #c
-.n .n .n .n .n .n .n .n .n .n .n .n .n .n .n #c
-.n .n .n .n .n .n .n .n .n .n .n .n .n .n .n #c
-.n .n .n .n .n .n .n .n .n .n .n .n .n .n .n #c
-.n .n .n .n .n .n .n .n .n .n #c #c .n .n .n #c
-.n .n .n .n .n .n .n .n .n .n .n #c .n .n .n #c
-.n .n .n .n .n #c #c .n .n .n .n #c .n .n .n #c
-.n .n .n .n .n .n #c .n .n .n .n #c .n .n .n #c
+. . . . . . . xs0,0,0 . . . . . . . #c
+. . . . . . . . . . . . . . . #c
+. . . . . . . . . . . . . . . #c
+. .z . . . . . . . . . . . . . #c
+. . . . . . . . . . . . . . . #c
+. . . . . . . . . . #c #c . . . #c
+. . . . . . . . . . . #c . . . #c
+. . . . . #c #c . . . . #c . . . #c
+. . . . . . #c . . . . #c . . . #c
 #c #c #c #c #c #c #c #c #c #c #c #c #c #c #c #c
