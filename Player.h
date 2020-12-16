@@ -16,6 +16,8 @@ public:
 	void Die();
 	bool Dead() const;
 	void Update();
+	int MaxHp() const;
+	int Hp() const;
 	void SetDirection(const Position& direction);
 	Position GetDirection() const;
 };

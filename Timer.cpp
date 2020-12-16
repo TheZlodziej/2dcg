@@ -10,7 +10,6 @@ void Timer::Tick()
 {
 	std::chrono::time_point<std::chrono::system_clock> tickTime = std::chrono::system_clock::now();
 	_deltaTime = tickTime - _currentTime;
-	//_currentTime = tickTime;
 }
 
 float Timer::DeltaTime()

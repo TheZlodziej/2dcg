@@ -123,7 +123,9 @@ void Game::CheckOptions()
 	{
 		if (_currentLevel->GetPlayer()->CollidingWith(tile))
 		{
-			Option option = tile.GetOption(OPTION::SWITCH_MAP);
+			Option option;
+
+			option = tile.GetOption(OPTION::SWITCH_MAP);
 			if (option.optionName != OPTION::OPTION_ERROR)
 			{
 				Position newPlayerPosition = { option.arguments[1], option.arguments[2] };
@@ -131,8 +133,15 @@ void Game::CheckOptions()
 				_currentLevel->GetPlayer()->SetPosition(newPlayerPosition);
 				Update({0,0});
 				_currentLevel->GetMap()->Show();
+				HUD();
 			}
-			//else if(tile.GetOption(OPTION::...)) etc..
+
+			option = tile.GetOption(OPTION::DEAL_DMG);
+			if (option.optionName != OPTION::OPTION_ERROR)
+			{
+				_currentLevel->GetPlayer()->LoseHp(option.arguments[0]);
+				HUD();
+			}
 		}
 	}
 }
@@ -216,6 +225,43 @@ void Game::GameLoop()
 	}
 }
 
+void Game::HUD()
+{
+	int mapHeight = _currentLevel->GetMap()->GetHeight();
+	int mapWidth = _currentLevel->GetMap()->GetWidth();
+	int maxHp = _currentLevel->GetPlayer()->MaxHp();
+	int Hp = _currentLevel->GetPlayer()->Hp();
+
+
+	//clear HUD
+	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
+
+	for (int i = 0; i < mapWidth + 2 * maxHp; i++)
+	{
+		std::cout << " ";
+	}
+
+	//draw new HUD data
+	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
+
+	for (int i = 0; i < mapWidth - 2 * maxHp - 7; i++)
+	{
+		std::cout << " ";
+	}
+
+	std::cout << "Hearts:";
+
+	for (int i = 0; i < Hp; i++)
+	{
+		std::cout << " *";
+	}
+
+	for (int i = 0; i < maxHp - Hp; i++)
+	{
+		std::cout << " _";
+	}
+}
+
 void Game::Start()
 {
 	if (!SelectionScreen()) // false if exit was selected;
@@ -225,5 +271,6 @@ void Game::Start()
 
 	Update({ 0,0 });
 	_currentLevel->GetMap()->Show();
+	HUD();
 	GameLoop();
 }

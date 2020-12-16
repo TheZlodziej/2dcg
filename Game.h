@@ -25,6 +25,7 @@ public:
 	bool MovePossible(std::vector<Position>& positions, const Position& direction);
 	void Start();
 	void CheckOptions();
+	void HUD();
 	bool SelectionScreen();
 	void ApplyGravity();
 };

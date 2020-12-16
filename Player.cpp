@@ -17,6 +17,11 @@ void Player::LoseHp(const int& amount)
 	}
 }
 
+int Player::Hp() const
+{
+	return _currentHp;
+}
+
 void Player::Die()
 {
 	_dead = true;
@@ -35,6 +40,11 @@ void Player::SetDirection(const Position& direction)
 Position Player::GetDirection() const
 {
 	return _direction;
+}
+
+int Player::MaxHp() const
+{
+	return _maxHp;
 }
 
 void Player::Update()

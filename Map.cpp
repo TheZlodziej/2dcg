@@ -58,8 +58,13 @@ void Map::Load(std::istream& mapStream)
 					optionName = OPTION::SWITCH_MAP;
 					break;
 
+				case 'd':
+					optionName = OPTION::DEAL_DMG;
+					break;
+
 				default:
 					optionName = OPTION::OPTION_ERROR;
+					break;
 				}
 
 				options.push_back({ optionName, arguments });
@@ -159,7 +164,7 @@ int Map::GetWidth() const
 
 void Map::GotoPosition(Position position) const
 {
-	COORD coord = { short(position.x), short(position.y) };
+	COORD coord = { static_cast<short>(position.x), static_cast<short>(position.y) };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
@@ -167,7 +172,7 @@ void Map::Draw(const Position& position, const char& character) const
 {
 	GotoPosition(position);
 	std::cout << character;
-	GotoPosition({ _width - 1, _height - 1 });
+	GotoPosition({ 0, _height });
 }
 
 void Map::Show()

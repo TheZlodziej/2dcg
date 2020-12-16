@@ -5,8 +5,6 @@
 #include <sstream>
 #include "EntityTile.h"
 #include "Exception.h"
-
-//temp library for displaying
 #include <iostream>
 
 class Map
