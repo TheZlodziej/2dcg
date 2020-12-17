@@ -7,6 +7,7 @@
 // #1 - file open error
 // #2 - invalid index
 // #3 - invalid color
+// #4 - invalid option
 
 class Exception
 {

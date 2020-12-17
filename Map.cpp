@@ -100,7 +100,7 @@ void Map::Load(std::istream& mapStream)
 						break;
 
 					default:
-						throw new Exception(3, "[TILE COLOR] invalid tile color.");
+						throw new Exception(3, "[TILE COLOR] invalid tile color at {" + std::to_string(j) + ", " + std::to_string(i) + "}.");
 						break;
 					}
 
@@ -142,14 +142,14 @@ void Map::Load(std::istream& mapStream)
 						break;
 
 					default:
-						throw new Exception(3, "[TILE BACKGROUND COLOR] invalid tile background color.");
+						throw new Exception(3, "[TILE BACKGROUND COLOR] invalid tile background color at {" + std::to_string(j) + ", " + std::to_string(i) + "}.");
 						break;
 					}
 					
 					break;
 
 				default:
-					optionName = OPTION::OPTION_ERROR;
+					throw new Exception(4, "[OPTION] invalid option name at {" + std::to_string(j) + ", " + std::to_string(i) + "}.");
 					break;
 				}
 
