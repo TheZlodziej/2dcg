@@ -1,6 +1,6 @@
 #include "EntityTile.h"
 
-EntityTile::EntityTile(const char& character, const Position& position, const std::vector<Option>& options): Tile(character, position)
+EntityTile::EntityTile(const char& character, const Position& position, const std::vector<Option>& options, const std::string& tileColor, const std::string& backgroundColor): Tile(character, position, tileColor, backgroundColor)
 {
 	_options = options;
 }

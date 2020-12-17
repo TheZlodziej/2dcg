@@ -6,6 +6,7 @@
 // #0 - file input error
 // #1 - file open error
 // #2 - invalid index
+// #3 - invalid color
 
 class Exception
 {

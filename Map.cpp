@@ -33,6 +33,8 @@ void Map::Load(std::istream& mapStream)
 			std::vector<Option> options;
 			std::istringstream optionsStream(tileData.substr(1));
 			std::string option;
+			std::string tileColor = "\u001b[37m"; //white
+			std::string backgroundColor = "\u001b[30m"; //black
 			while (std::getline(optionsStream, option, '/'))
 			{
 				std::vector<int> arguments = {};
@@ -62,6 +64,90 @@ void Map::Load(std::istream& mapStream)
 					optionName = OPTION::DEAL_DMG;
 					break;
 
+				case 'f':  //tile color
+					switch (arguments[0])
+					{
+					case 0: //black
+						tileColor = "\u001b[30m";
+						break;
+
+					case 1: //red
+						tileColor = "\u001b[31m";
+						break;
+
+					case 2: //green
+						tileColor = "\u001b[32m";
+						break;
+
+					case 3: //yellow
+						tileColor = "\u001b[33m";
+						break;
+
+					case 4: //blue
+						tileColor = "\u001b[34m";
+						break;
+
+					case 5: //magenta
+						tileColor = "\u001b[35m";
+						break;
+
+					case 6: //cyan
+						tileColor = "\u001b[36m";
+						break;
+
+					case 7: //white
+						tileColor = "\u001b[37m";
+						break;
+
+					default:
+						throw new Exception(3, "[TILE COLOR] invalid tile color.");
+						break;
+					}
+
+					break;
+
+				case 'b': //backrogund color
+					switch(arguments[0])
+					{
+					case 0: //black
+						backgroundColor = "\u001b[40m";
+						break;
+
+					case 1: //red
+						backgroundColor = "\u001b[41m";
+						break;
+						
+					case 2: //green
+						backgroundColor = "\u001b[42m";
+						break;
+
+					case 3: //yellow
+						backgroundColor = "\u001b[43m";
+						break;
+					
+					case 4: //blue
+						backgroundColor = "\u001b[44m";
+						break;
+
+					case 5: //magenta
+						backgroundColor = "\u001b[45m";
+						break;
+
+					case 6: //cyan
+						backgroundColor = "\u001b[46m";
+						break;
+
+					case 7: //white
+						backgroundColor = "\u001b[47m";
+						break;
+
+					default:
+						throw new Exception(3, "[TILE BACKGROUND COLOR] invalid tile background color.");
+						break;
+					}
+					
+					break;
+
 				default:
 					optionName = OPTION::OPTION_ERROR;
 					break;
@@ -70,7 +156,7 @@ void Map::Load(std::istream& mapStream)
 				options.push_back({ optionName, arguments });
 			}
 			
-			map[j][i] = EntityTile(tileData[0], { j, i }, options);
+			map[j][i] = EntityTile(tileData[0], { j, i }, options, tileColor, backgroundColor);
 
 			if (map[j][i].GetOption(OPTION::COLLIDABLE).optionName != OPTION::OPTION_ERROR)
 			{
@@ -80,7 +166,7 @@ void Map::Load(std::istream& mapStream)
 	}
 
 	_map = map;
-	_originalMap = _map;
+	_originalMap = map;
 }
 
 EntityTile& Map::At(const Position& position)
@@ -141,14 +227,14 @@ void Map::UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<E
 	{
 		Position tilePosition = tile.GetPosition();
 		At(tilePosition) = _originalMap[tilePosition.x][tilePosition.y];
-		Draw(tilePosition, _originalMap[tilePosition.x][tilePosition.y].GetCharacter());
-	}
+		Draw(_originalMap[tilePosition.x][tilePosition.y]);
+	} //CZM KOLORY NIE DZIALAJA?????
 
 	for (EntityTile const& tile : newState)
 	{
 		Position tilePosition = tile.GetPosition();
 		At(tilePosition) = tile;
-		Draw(tilePosition, tile.GetCharacter());
+		Draw(tile);
 	}
 }
 
@@ -162,16 +248,16 @@ int Map::GetWidth() const
 	return _width;
 }
 
-void Map::GotoPosition(Position position) const
+void Map::GotoPosition(const Position& position) const
 {
 	COORD coord = { static_cast<short>(position.x), static_cast<short>(position.y) };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void Map::Draw(const Position& position, const char& character) const
+void Map::Draw(const EntityTile& tile) const
 {
-	GotoPosition(position);
-	std::cout << character;
+	GotoPosition(tile.GetPosition());
+	std::cout << _originalMap[tile.GetPosition().x][tile.GetPosition().y].GetBackgroundColor() << tile.GetTileColor() << tile.GetCharacter() << /* reset colors */ "\u001b[0m"; // original background
 	GotoPosition({ 0, _height });
 }
 
@@ -182,7 +268,7 @@ void Map::Show()
 	{
 		for (int x = 0; x < _width; x++)
 		{
-			std::cout << At({ x,y }).GetCharacter();
+			std::cout << _originalMap[x][y].GetBackgroundColor() << At({ x,y }).GetTileColor() << At({ x,y }).GetCharacter() << /* reset colors */ "\u001b[0m";
 		}
 		std::cout << "\n";
 	}

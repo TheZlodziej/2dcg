@@ -52,7 +52,6 @@ void Player::Update()
 	for (EntityTile& tile : _body)
 	{
 		tile.SetPosition(tile.GetPosition() + _direction);
-		std::vector<Position> newCollidingPositions;
 		SetCollidingPositions();
 	}
 }

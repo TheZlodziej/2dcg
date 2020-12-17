@@ -250,12 +250,12 @@ void Game::HUD()
 	}
 
 	std::cout << "Hearts:";
-
+	std::cout << "\u001b[31m"; //red color
 	for (int i = 0; i < Hp; i++)
 	{
 		std::cout << " *";
 	}
-
+	std::cout << "\u001b[37m"; //white color
 	for (int i = 0; i < maxHp - Hp; i++)
 	{
 		std::cout << " _";

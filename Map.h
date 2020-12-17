@@ -29,8 +29,8 @@ public:
 	bool InBoundings(const Position& position) const;
 	int GetHeight() const;
 	int GetWidth() const;
-	void GotoPosition(Position position) const;
-	void Draw(const Position& position, const char& character) const;
+	void GotoPosition(const Position& position) const;
+	void Draw(const EntityTile& tile) const;
 	void Show();
 };
 
