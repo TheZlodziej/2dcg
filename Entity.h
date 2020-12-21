@@ -17,8 +17,8 @@ public:
 	bool CollidingWith(const EntityTile& tile) const;
 	bool CollidingWith(const Entity& entity) const;
 	std::vector<EntityTile> GetBody() const;
-	EntityTile TopLeft() const;
+	Position TopLeft() const; //get entity's top left position (as if it were square)
+	Position BottomRight() const; //get entity's bottom right position (as if it were square)
 	void SetPosition(Position& position);
-	EntityTile Lowest() const;
 };
 

@@ -14,6 +14,9 @@ private:
 	int _currentLevelIndex;
 	Timer* _timer = nullptr;
 	float _frameRate;
+	bool _playerJumping;
+	int _jumpingFrame;
+	int _jumpingMaxFrame;
 
 public:
 	Game(const std::vector<std::string>& filenames, const float& frameRate=30);
@@ -28,5 +31,7 @@ public:
 	void HUD();
 	bool SelectionScreen();
 	void ApplyGravity();
+	void Jump();
+	void Move(const Position& direction);
 };
 

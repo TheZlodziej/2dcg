@@ -36,3 +36,8 @@ bool Position::operator<(Position const& a) const
 {
 	return (((this->x * this->x) + (this->y * this->y)) < ((a.x * a.x) + (a.y * a.y)));
 }
+
+bool Position::operator!=(Position const& a) const
+{
+	return ((this->x != a.x) or (this->y != a.y));
+}

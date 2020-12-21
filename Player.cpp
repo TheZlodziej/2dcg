@@ -54,4 +54,5 @@ void Player::Update()
 		tile.SetPosition(tile.GetPosition() + _direction);
 		SetCollidingPositions();
 	}
+	_direction = { 0,0 };
 }

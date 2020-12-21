@@ -57,7 +57,7 @@ bool Entity::CollidingWith(const Entity& entity) const
 
 void Entity::SetPosition(Position& position)
 {
-	Position deltaPosition = position - TopLeft().GetPosition();
+	Position deltaPosition = position - TopLeft();
 
 	for (EntityTile& tile : _body)
 	{
@@ -65,32 +65,42 @@ void Entity::SetPosition(Position& position)
 	}
 }
 
-EntityTile Entity::TopLeft() const
+Position Entity::TopLeft() const
 {
-	EntityTile topLeft = _body[0];
+	Position topLeft = _body[0].GetPosition();
 
-	for (const EntityTile& tile : _body)
+	for (const Position& position : GetCollidingPositions())
 	{
-		if (tile.GetPosition() < topLeft.GetPosition())
+		if (position.x < topLeft.x)
 		{
-			topLeft = tile;
+			topLeft.x = position.x;
+		}
+
+		if (position.y < topLeft.y)
+		{
+			topLeft.y = topLeft.y;
 		}
 	}
 
 	return topLeft;
 }
 
-EntityTile Entity::Lowest() const
+Position Entity::BottomRight() const
 {
-	EntityTile lowest = _body[0];
+	Position bottomRight = _body[0].GetPosition();
 
-	for (const EntityTile& tile : _body)
+	for (const Position& position : GetCollidingPositions())
 	{
-		if (tile.GetPosition().y < lowest.GetPosition().y)
+		if (position.x > bottomRight.x)
 		{
-			lowest = tile;
+			bottomRight.x = position.x;
+		}
+
+		if (position.y > bottomRight.y)
+		{
+			bottomRight.y = position.y;
 		}
 	}
 
-	return lowest;
+	return bottomRight;
 }

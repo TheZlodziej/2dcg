@@ -5,6 +5,9 @@ Game::Game(const std::vector<std::string>& filenames, const float& frameRate)
 	_levels = filenames;
 	_frameRate = frameRate;
 	_timer = new Timer();
+	_playerJumping = false;
+	_jumpingFrame = 0;
+	_jumpingMaxFrame = 4;
 }
 
 Game::~Game()
@@ -148,6 +151,7 @@ void Game::CheckOptions()
 
 void Game::ApplyGravity()
 {
+	//check if a block below player {or any gravity-object} is collidable then move down if isn't
 	Position direction = { 0,1 };
 	_currentLevel->GetPlayer()->SetDirection(direction);
 	std::vector<Position> playerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
@@ -155,6 +159,11 @@ void Game::ApplyGravity()
 	if (MovePossible(playerPositions, direction))
 	{
 		Update(direction);
+	}
+	else
+	{
+		_playerJumping = false;
+		_jumpingFrame = 0;
 	}
 }
 
@@ -177,7 +186,10 @@ void Game::KeyboardInput(Position& direction)
 	if (GetAsyncKeyState(VK_UP) and 0x26)
 	{
 		//up arrow
-		direction.y = -1;
+		if (!_playerJumping)
+		{
+			_playerJumping = true;
+		}
 	}
 
 	if (GetAsyncKeyState(VK_DOWN) and 0x28)
@@ -199,6 +211,54 @@ void Game::KeyboardInput(Position& direction)
 	}
 }
 
+void Game::Jump()
+{
+	if (_playerJumping)
+	{
+		_jumpingFrame++;
+		std::vector<Position> playerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
+
+		if (_jumpingFrame < _jumpingMaxFrame)
+		{
+			Position topLeft = _currentLevel->GetPlayer()->TopLeft() + Position({0, -2});
+			Position bottomRight = _currentLevel->GetPlayer()->BottomRight() + Position({0, -2});
+			if (MovePossible(playerPositions, { 0, -1 }) and _currentLevel->GetMap()->InBoundings(topLeft) and _currentLevel->GetMap()->InBoundings(bottomRight))
+			{
+				//gravity forces 1 down so you need to go 2 up
+				_currentLevel->GetPlayer()->SetDirection({ 0, -2 });
+				Update({ 0,-2 }); 
+			}
+			else
+			{
+				_jumpingFrame = _jumpingMaxFrame;
+			}
+		}
+		
+		else if (_jumpingFrame == _jumpingMaxFrame) //hung in the air on the last frame so it looks more realistic
+		{
+			if (MovePossible(playerPositions, { 0, -1 }))
+			{
+				_currentLevel->GetPlayer()->SetDirection({ 0,-1 });
+				Update({ 0,-1 });
+			}
+		}
+	}
+}
+
+void Game::Move(const Position& direction)
+{
+	if (direction != Position{ 0, 0 })
+	{
+		std::vector<Position> playerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
+
+		if (MovePossible(playerPositions, direction))
+		{
+			_currentLevel->GetPlayer()->SetDirection(direction);
+			Update(direction);
+		}
+	}
+}
+
 void Game::GameLoop()
 {
 	while (!_currentLevel->GetPlayer()->Dead())
@@ -209,18 +269,11 @@ void Game::GameLoop()
 		{
 			Position direction;
 			KeyboardInput(direction);
-			std::this_thread::sleep_for(std::chrono::milliseconds(30));
-			
-			_currentLevel->GetPlayer()->SetDirection(direction);
-			std::vector<Position> playerPositions = _currentLevel->GetPlayer()->GetCollidingPositions();
-
-			if (MovePossible(playerPositions, direction)) //if didnt hit any collidables and is in boundings
-			{
-				Update(direction);
-			}
-
+			Jump();
+			Move(direction);
 			ApplyGravity();
 			CheckOptions();
+			std::this_thread::sleep_for(std::chrono::milliseconds(30));
 		}
 	}
 }

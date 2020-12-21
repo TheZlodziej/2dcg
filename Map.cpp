@@ -52,10 +52,6 @@ void Map::Load(std::istream& mapStream)
 					optionName = OPTION::COLLIDABLE;
 					break;
 
-				case 'n':
-					optionName = OPTION::NON_COLLIDABLE;
-					break;
-
 				case 's':
 					optionName = OPTION::SWITCH_MAP;
 					break;
@@ -228,7 +224,7 @@ void Map::UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<E
 		Position tilePosition = tile.GetPosition();
 		At(tilePosition) = _originalMap[tilePosition.x][tilePosition.y];
 		Draw(_originalMap[tilePosition.x][tilePosition.y]);
-	} //CZM KOLORY NIE DZIALAJA?????
+	}
 
 	for (EntityTile const& tile : newState)
 	{
