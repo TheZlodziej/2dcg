@@ -230,7 +230,11 @@ void Game::Jump()
 			}
 			else
 			{
+				//end jumping
 				_jumpingFrame = _jumpingMaxFrame;
+				//make it look more realistic
+				_currentLevel->GetPlayer()->SetDirection({ 0,-1 });
+				Update({ 0,-1 }); 
 			}
 		}
 		
