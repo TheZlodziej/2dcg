@@ -266,7 +266,7 @@ void Game::Move(const Position& direction)
 void Game::GameOver()
 {
 	int selection = 0; // selection: 0=restart; 1=quit
-	int optionsNumber = 2;
+	int optionsNumber = 3;
 	bool keyPressed = false;
 	bool selected = false;
 	
@@ -277,7 +277,8 @@ void Game::GameOver()
 		std::cout << "//.................Game Over.................//" << std::endl;
 		std::cout << "//...........................................//" << std::endl;
 		std::cout << "//................." << (selection == 0 ? "[Restart]" : ".Restart.") << ".................//" << std::endl;
-		std::cout << "//.................." << (selection == 1l ? "[Quit]" : ".Quit.") << "...................//" << std::endl;
+		std::cout << "//.............." << (selection == 1 ? "[Start Screen]" : ".Start Screen.") << "...............//" << std::endl;
+		std::cout << "//.................." << (selection == 2 ? "[Quit]" : ".Quit.") << "...................//" << std::endl;
 		std::cout << "//...........................................//" << std::endl;
 		std::cout << "//...........................................//";
 	};
@@ -320,10 +321,14 @@ void Game::GameOver()
 
 	if (selection == 0)
 	{
+		RestartLevel();
+	}
+	else if (selection == 1)
+	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(100)); // to prevent accidental game start
 		Start();
 	}
-	else if (selection == 1)
+	else if (selection == 2)
 	{
 		return;
 	}
@@ -387,6 +392,15 @@ void Game::HUD()
 	}
 }
 
+void Game::RestartLevel()
+{
+	Update({ 0,0 });
+	LoadLevel(_currentLevelIndex);
+	_currentLevel->GetMap()->Show();
+	HUD();
+	GameLoop();
+}
+
 void Game::Start()
 {
 	if (!SelectionScreen()) // false if exit was selected;
@@ -394,8 +408,5 @@ void Game::Start()
 		return;
 	}
 
-	Update({ 0,0 });
-	_currentLevel->GetMap()->Show();
-	HUD();
-	GameLoop();
+	RestartLevel();
 }

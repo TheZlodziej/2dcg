@@ -2,7 +2,6 @@
 
 Entity::Entity(const std::vector<EntityTile>& body) 
 {
-	//SetCollidingPositions(); ??? does it need to be here
 	_body = body;
 	SetCollidingPositions();
 }

@@ -34,5 +34,6 @@ public:
 	void Jump();
 	void Move(const Position& direction);
 	void GameOver();
+	void RestartLevel();
 };
 
