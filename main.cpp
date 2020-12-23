@@ -12,6 +12,10 @@ int main()
 		exception->Display();
 		delete exception;
 	}
+	catch (...)
+	{
+		Exception::Unknown();
+	}
 
 	return 0;
 }

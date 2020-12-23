@@ -18,5 +18,6 @@ private:
 public:
 	Exception(int exceptionNumber, std::string exceptionMessage);
 	void Display() const;
+	static void Unknown();
 };
 
