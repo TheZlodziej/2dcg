@@ -91,6 +91,7 @@ bool Game::SelectionScreen()
 
 				case 1:
 					levelIndex = (levelIndex + 1) % _levels.size();
+					printSelectionScreen();
 					break;
 
 				case 2:
@@ -102,7 +103,6 @@ bool Game::SelectionScreen()
 			{
 				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				keyPressed = false;
-				printSelectionScreen();
 			}
 		}
 	}
@@ -263,6 +263,72 @@ void Game::Move(const Position& direction)
 	}
 }
 
+void Game::GameOver()
+{
+	int selection = 0; // selection: 0=restart; 1=quit
+	int optionsNumber = 2;
+	bool keyPressed = false;
+	bool selected = false;
+	
+	//displaying
+	auto printGameOverScreen = [&selection]() {
+		system("cls");
+		std::cout << "//...........................................//" << std::endl;
+		std::cout << "//.................Game Over.................//" << std::endl;
+		std::cout << "//...........................................//" << std::endl;
+		std::cout << "//................." << (selection == 0 ? "[Restart]" : ".Restart.") << ".................//" << std::endl;
+		std::cout << "//.................." << (selection == 1l ? "[Quit]" : ".Quit.") << "...................//" << std::endl;
+		std::cout << "//...........................................//" << std::endl;
+		std::cout << "//...........................................//";
+	};
+
+	printGameOverScreen();
+	while (!selected)
+	{
+		_timer->Tick();
+		if (_timer->DeltaTime() >= 1.0f / _frameRate)
+		{
+			// up arrow
+			if (GetAsyncKeyState(VK_UP) and 0x26)
+			{
+				keyPressed = true;
+				selection = ((selection - 1) % optionsNumber) < 0 ? optionsNumber - 1 : selection - 1;
+				printGameOverScreen();
+			}
+
+			// down arrow
+			else if (GetAsyncKeyState(VK_DOWN) and 0x28)
+			{
+				keyPressed = true;
+				selection = (selection + 1) % optionsNumber;
+				printGameOverScreen();
+			}
+
+			// enter
+			else if (GetAsyncKeyState(VK_RETURN) and 0x0D)
+			{
+				selected = true;
+			}
+
+			if (keyPressed)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+				keyPressed = false;
+			}
+		}
+	}
+
+	if (selection == 0)
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(100)); // to prevent accidental game start
+		Start();
+	}
+	else if (selection == 1)
+	{
+		return;
+	}
+}
+
 void Game::GameLoop()
 {
 	while (!_currentLevel->GetPlayer()->Dead())
@@ -277,9 +343,11 @@ void Game::GameLoop()
 			Move(direction);
 			ApplyGravity();
 			CheckOptions();
-			std::this_thread::sleep_for(std::chrono::milliseconds(30));
+			std::this_thread::sleep_for(std::chrono::milliseconds(35));
 		}
 	}
+
+	GameOver();
 }
 
 void Game::HUD()

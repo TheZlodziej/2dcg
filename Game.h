@@ -33,5 +33,6 @@ public:
 	void ApplyGravity();
 	void Jump();
 	void Move(const Position& direction);
+	void GameOver();
 };
 
