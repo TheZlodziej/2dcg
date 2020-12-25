@@ -137,12 +137,20 @@ void Game::CheckOptions()
 				Update({0,0});
 				_currentLevel->GetMap()->Show();
 				HUD();
+				//std::this_thread::sleep_for(std::chrono::milliseconds(100)); //so it doesn't bug
 			}
 
 			option = tile.GetOption(OPTION::DEAL_DMG);
 			if (option.optionName != OPTION::OPTION_ERROR)
 			{
 				_currentLevel->GetPlayer()->LoseHp(option.arguments[0]);
+				HUD();
+			}
+
+			option = tile.GetOption(OPTION::ADD_GOLD);
+			if (option.optionName != OPTION::OPTION_ERROR)
+			{
+				_currentLevel->AddGold(option.arguments[0]);
 				HUD();
 			}
 		}
@@ -361,6 +369,7 @@ void Game::HUD()
 	int mapWidth = _currentLevel->GetMap()->GetWidth();
 	int maxHp = _currentLevel->GetPlayer()->MaxHp();
 	int Hp = _currentLevel->GetPlayer()->Hp();
+	int gold = _currentLevel->GetGold();
 
 
 	//clear HUD
@@ -374,13 +383,33 @@ void Game::HUD()
 	//draw new HUD data
 	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
 
-	for (int i = 0; i < mapWidth - 2 * maxHp - 7; i++)
+	//gold
+	std::cout << "\u001b[37mGold: \u001b[33m" << gold << " "; //white and yellow colors
+
+	auto digits = [](int number) {
+		int numberOfDigits = 0;
+
+		if (number < 0)
+		{
+			number = -number;
+			numberOfDigits++;
+		}
+
+		while (number > 0)
+		{
+			number /= 10;
+			numberOfDigits++;
+		}
+		return numberOfDigits;
+	};
+
+	//hearts
+	for (int i = 0; i < mapWidth - 2 * maxHp - 7 /* Hearts: - 7 chars */- 6 /* Gold: - 6 chars */ - digits(gold) - 1 /* 1 minimum space char */; i++)
 	{
 		std::cout << " ";
 	}
 
-	std::cout << "Hearts:";
-	std::cout << "\u001b[31m"; //red color
+	std::cout << "\u001b[37mHearts:\u001b[31m"; //red color
 	for (int i = 0; i < Hp; i++)
 	{
 		std::cout << " *";

@@ -60,6 +60,10 @@ void Map::Load(std::istream& mapStream)
 					optionName = OPTION::DEAL_DMG;
 					break;
 
+				case 'g':
+					optionName = OPTION::ADD_GOLD;
+					break;
+
 				case 'f':  //tile color
 					switch (arguments[0])
 					{
@@ -253,8 +257,8 @@ void Map::GotoPosition(const Position& position) const
 void Map::Draw(const EntityTile& tile) const
 {
 	GotoPosition(tile.GetPosition());
-	std::cout << _originalMap[tile.GetPosition().x][tile.GetPosition().y].GetBackgroundColor() << tile.GetTileColor() << tile.GetCharacter() << /* reset colors */ "\u001b[0m"; // original background
-	GotoPosition({ 0, _height });
+	std::cout << _originalMap[tile.GetPosition().x][tile.GetPosition().y].GetBackgroundColor() << tile.GetTileColor() << tile.GetCharacter() << /* reset colors */ "\u001b[0m";
+	GotoPosition({ 0, _height + 2 });
 }
 
 void Map::Show()

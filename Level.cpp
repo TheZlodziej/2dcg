@@ -4,6 +4,7 @@ Level::Level(std::istream& levelStream)
 {
 	Load(levelStream);
 	LoadMap(0);
+	_gold = 0;
 }
 
 Level::~Level()
@@ -78,7 +79,7 @@ void Level::Load(std::istream& levelStream)
 void Level::LoadMap(const int& mapIndex)
 {
 	_currentMapIndex = mapIndex;
-	if (_currentMapIndex >= int(_maps.size()) or _currentMapIndex < 0)
+	if (_currentMapIndex >= static_cast<int>(_maps.size()) or _currentMapIndex < 0)
 	{
 		throw new Exception(2, "[MAP] map index out of size.");
 	}
@@ -127,4 +128,14 @@ void Level::AssignOptionTiles()
 std::vector<EntityTile> Level::GetOptionTiles() const
 {
 	return _optionTiles;
+}
+
+void Level::AddGold(const int& amount)
+{
+	_gold += amount;
+}
+
+int Level::GetGold() const
+{
+	return _gold;
 }
