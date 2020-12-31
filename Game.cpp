@@ -427,6 +427,9 @@ void Game::HUD()
 	{
 		std::cout << " _";
 	}
+
+	//level info
+	std::cout << "\n\nLevel: (" << _currentLevelIndex << ") [" << _levels[_currentLevelIndex] << "]";
 }
 
 void Game::RestartLevel()

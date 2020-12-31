@@ -263,7 +263,7 @@ void Map::Draw(const EntityTile& tile) const
 {
 	GotoPosition(tile.GetPosition());
 	std::cout << _originalMap[tile.GetPosition().x][tile.GetPosition().y].GetBackgroundColor() << tile.GetTileColor() << tile.GetCharacter() << /* reset colors */ "\u001b[0m";
-	GotoPosition({ 0, _height + 2 });
+	GotoPosition({ 0, _height + 5 });
 }
 
 void Map::Show()
