@@ -161,7 +161,6 @@ void Game::CheckOptions()
 				_currentLevel->GetMap()->SetCharacterAt(tile.GetPosition(), newCharacter);
 				_currentLevel->GetMap()->RemoveOptionAt(tile.GetPosition(), OPTION::ADD_GOLD);
 				_currentLevel->AssignOptionTiles();
-
 			}
 		}
 	}
@@ -364,8 +363,8 @@ void Game::GameLoop()
 			KeyboardInput(direction);
 			Jump();
 			Move(direction);
-			ApplyGravity();
 			CheckOptions();
+			ApplyGravity();
 			std::this_thread::sleep_for(std::chrono::milliseconds(35));
 		}
 	}
