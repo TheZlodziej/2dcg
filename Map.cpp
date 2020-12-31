@@ -65,87 +65,11 @@ void Map::Load(std::istream& mapStream)
 					break;
 
 				case 'f':  //tile color
-					switch (arguments[0])
-					{
-					case 0: //black
-						tileColor = "\u001b[30m";
-						break;
-
-					case 1: //red
-						tileColor = "\u001b[31m";
-						break;
-
-					case 2: //green
-						tileColor = "\u001b[32m";
-						break;
-
-					case 3: //yellow
-						tileColor = "\u001b[33m";
-						break;
-
-					case 4: //blue
-						tileColor = "\u001b[34m";
-						break;
-
-					case 5: //magenta
-						tileColor = "\u001b[35m";
-						break;
-
-					case 6: //cyan
-						tileColor = "\u001b[36m";
-						break;
-
-					case 7: //white
-						tileColor = "\u001b[37m";
-						break;
-
-					default:
-						throw new Exception(3, "[TILE COLOR] invalid tile color at {" + std::to_string(j) + ", " + std::to_string(i) + "}.");
-						break;
-					}
-
+					tileColor = Tile::TileColor(arguments[0]);
 					break;
 
 				case 'b': //backrogund color
-					switch(arguments[0])
-					{
-					case 0: //black
-						backgroundColor = "\u001b[40m";
-						break;
-
-					case 1: //red
-						backgroundColor = "\u001b[41m";
-						break;
-						
-					case 2: //green
-						backgroundColor = "\u001b[42m";
-						break;
-
-					case 3: //yellow
-						backgroundColor = "\u001b[43m";
-						break;
-					
-					case 4: //blue
-						backgroundColor = "\u001b[44m";
-						break;
-
-					case 5: //magenta
-						backgroundColor = "\u001b[45m";
-						break;
-
-					case 6: //cyan
-						backgroundColor = "\u001b[46m";
-						break;
-
-					case 7: //white
-						backgroundColor = "\u001b[47m";
-						break;
-
-					default:
-						throw new Exception(3, "[TILE BACKGROUND COLOR] invalid tile background color at {" + std::to_string(j) + ", " + std::to_string(i) + "}.");
-						break;
-					}
-					
+					backgroundColor = Tile::BackgroundColor(arguments[0]);
 					break;
 
 				default:
@@ -287,4 +211,14 @@ void Map::SetCharacterAt(const Position& position, const char& character)
 void Map::RemoveOptionAt(const Position& position, const OPTION& optionName)
 {
 	AtOriginal(position).RemoveOption(optionName);
+}
+
+void Map::SetTileColorAt(const Position& position, const int& color)
+{
+	AtOriginal(position).SetColor(color);
+}
+
+void Map::SetTileBackgroundColorAt(const Position& position, const int& color)
+{
+	AtOriginal(position).SetBackgroundColor(color);
 }

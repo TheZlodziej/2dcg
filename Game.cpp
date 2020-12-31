@@ -158,8 +158,13 @@ void Game::CheckOptions()
 
 				//change to different tile in original map & remove gold option
 				char newCharacter = static_cast<char>(option.arguments[1]);
+				int newTileColor = option.arguments[2];
+				int newBackgroundColor = option.arguments[3];
 				_currentLevel->GetMap()->SetCharacterAt(tile.GetPosition(), newCharacter);
 				_currentLevel->GetMap()->RemoveOptionAt(tile.GetPosition(), OPTION::ADD_GOLD);
+				_currentLevel->GetMap()->SetTileColorAt(tile.GetPosition(), newTileColor);
+				_currentLevel->GetMap()->SetTileBackgroundColorAt(tile.GetPosition(), newBackgroundColor);
+
 				_currentLevel->AssignOptionTiles();
 			}
 		}

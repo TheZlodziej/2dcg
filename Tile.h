@@ -1,6 +1,7 @@
 #pragma once
 #include "Position.h"
 #include <string>
+#include "Exception.h"
 
 class Tile {
 protected:
@@ -17,4 +18,8 @@ public:
 	void SetPosition(const Position& position);
 	std::string GetTileColor() const;
 	std::string GetBackgroundColor() const;
+	static std::string TileColor(const int& color);
+	static std::string BackgroundColor(const int& color);
+	void SetColor(const int& color);
+	void SetBackgroundColor(const int& color);
 };

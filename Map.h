@@ -35,5 +35,7 @@ public:
 	void Show();
 	void SetCharacterAt(const Position& position, const char& character); //sets original character at position to given character
 	void RemoveOptionAt(const Position& postiion, const OPTION& optionName); //removes an option with given option name from original map at given position
+	void SetTileColorAt(const Position& position, const int& color);
+	void SetTileBackgroundColorAt(const Position& position, const int& color);
 };
 
