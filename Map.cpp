@@ -17,7 +17,6 @@ void Map::Load(std::istream& mapStream)
 
 	for (int i = 0; i < _height; i++)
 	{
-		//std::vector<EntityTile> row;
 		std::string rowLine;
 		std::getline(mapStream, rowLine);
 		std::stringstream row(rowLine);
@@ -41,6 +40,7 @@ void Map::Load(std::istream& mapStream)
 				OPTION optionName = OPTION::OPTION_ERROR;
 				std::istringstream argumentsStream(option.substr(1));
 				std::string argument;
+				
 				while (std::getline(argumentsStream, argument, ','))
 				{
 					arguments.push_back(std::stoi(argument));
@@ -174,6 +174,11 @@ EntityTile& Map::At(const Position& position)
 	return _map[position.x][position.y]; 
 }
 
+EntityTile& Map::AtOriginal(const Position& position)
+{
+	return _originalMap[position.x][position.y];
+}
+
 std::vector<Position> Map::GetCollidingPositions() const
 {
 	return _collidingPositions;
@@ -226,8 +231,8 @@ void Map::UpdateMap(const std::vector<EntityTile>& oldState, const std::vector<E
 	for (EntityTile const& tile : oldState)
 	{
 		Position tilePosition = tile.GetPosition();
-		At(tilePosition) = _originalMap[tilePosition.x][tilePosition.y];
-		Draw(_originalMap[tilePosition.x][tilePosition.y]);
+		At(tilePosition) = AtOriginal(tilePosition);
+		Draw(AtOriginal(tilePosition));
 	}
 
 	for (EntityTile const& tile : newState)
@@ -268,8 +273,18 @@ void Map::Show()
 	{
 		for (int x = 0; x < _width; x++)
 		{
-			std::cout << _originalMap[x][y].GetBackgroundColor() << At({ x,y }).GetTileColor() << At({ x,y }).GetCharacter() << /* reset colors */ "\u001b[0m";
+			std::cout << AtOriginal({ x,y }).GetBackgroundColor() << At({ x,y }).GetTileColor() << At({ x,y }).GetCharacter() << /* reset colors */ "\u001b[0m";
 		}
 		std::cout << "\n";
 	}
+}
+
+void Map::SetCharacterAt(const Position& position, const char& character)
+{
+	AtOriginal(position).SetCharacter(character);
+}
+
+void Map::RemoveOptionAt(const Position& position, const OPTION& optionName)
+{
+	AtOriginal(position).RemoveOption(optionName);
 }

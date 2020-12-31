@@ -5,9 +5,9 @@ Game::Game(const std::vector<std::string>& filenames, const float& frameRate)
 	_levels = filenames;
 	_frameRate = frameRate;
 	_timer = new Timer();
-	_playerJumping = false;
-	_jumpingFrame = 0;
+	_playerJumping = true;
 	_jumpingMaxFrame = 4;
+	_jumpingFrame = _jumpingMaxFrame + 1;
 }
 
 Game::~Game()
@@ -30,6 +30,8 @@ void Game::LoadLevel(const int& levelIndex)
 	if (levelStream.good())
 	{
 		_currentLevel = new Level(levelStream);
+		_playerJumping = true;
+		_jumpingFrame = _jumpingMaxFrame + 1; // to prevent jumping if spawned in the air
 	}
 	else
 	{
@@ -122,7 +124,7 @@ bool Game::MovePossible(std::vector<Position>& positions, const Position& direct
 
 void Game::CheckOptions()
 {
-	for (const EntityTile& tile : _currentLevel->GetOptionTiles())
+	for (EntityTile& tile : _currentLevel->GetOptionTiles())
 	{
 		if (_currentLevel->GetPlayer()->CollidingWith(tile))
 		{
@@ -131,8 +133,9 @@ void Game::CheckOptions()
 			option = tile.GetOption(OPTION::SWITCH_MAP);
 			if (option.optionName != OPTION::OPTION_ERROR)
 			{
-				Position newPlayerPosition = { option.arguments[1], option.arguments[2] };
-				_currentLevel->LoadMap(option.arguments[0]);
+				Position newPlayerPosition = Position({ option.arguments[1], option.arguments[2] });
+				int newMapIndex = option.arguments[0];
+				_currentLevel->LoadMap(newMapIndex); //option.arguments[0]
 				_currentLevel->GetPlayer()->SetPosition(newPlayerPosition);
 				Update({0,0});
 				_currentLevel->GetMap()->Show();
@@ -152,6 +155,13 @@ void Game::CheckOptions()
 			{
 				_currentLevel->AddGold(option.arguments[0]);
 				HUD();
+
+				//change to different tile in original map & remove gold option
+				char newCharacter = static_cast<char>(option.arguments[1]);
+				_currentLevel->GetMap()->SetCharacterAt(tile.GetPosition(), newCharacter);
+				_currentLevel->GetMap()->RemoveOptionAt(tile.GetPosition(), OPTION::ADD_GOLD);
+				_currentLevel->AssignOptionTiles();
+
 			}
 		}
 	}
@@ -370,7 +380,6 @@ void Game::HUD()
 	int maxHp = _currentLevel->GetPlayer()->MaxHp();
 	int Hp = _currentLevel->GetPlayer()->Hp();
 	int gold = _currentLevel->GetGold();
-
 
 	//clear HUD
 	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
