@@ -44,7 +44,7 @@ void Game::LoadLevel(const int& levelIndex)
 bool Game::SelectionScreen()
 {
 	int selection = 0; // selection: 0=start; 1=change leve; 2=exit
-	int optionsNumber = 3;
+	int optionsNumber = 4;
 	int levelIndex = _currentLevelIndex;
 	bool keyPressed = false;
 
@@ -53,10 +53,11 @@ bool Game::SelectionScreen()
 		std::cout << "//..........................................//" << std::endl;
 		std::cout << "//.................................Level:" << levelIndex << "..//" << std::endl;
 		std::cout << "//................." << (selection == 0 ? "[Start]" : ".Start.") << "..................//" << std::endl;
-		std::cout << "//............." << (selection == 1l ? "[Change level]" : ".Change level.") << "...............//" << std::endl;
-		std::cout << "//................." << (selection == 2 ? "[Exit]" : ".Exit.") << "...................//" << std::endl;
+		std::cout << "//............." << (selection == 1 ? "[Change level]" : ".Change level.") << "...............//" << std::endl;
+		std::cout << "//............." << (selection == 2 ? "[How to play?]" : ".How to play?.") << "...............//" << std::endl;
+		std::cout << "//................." << (selection == 3 ? "[Exit]" : ".Exit.") << "...................//" << std::endl;
 		std::cout << "//..........................................//" << std::endl;
-		std::cout << "//..........................................//";
+		std::cout << "//..........................................//" << std::endl;
 	};
 	printSelectionScreen();
 
@@ -97,6 +98,11 @@ bool Game::SelectionScreen()
 					break;
 
 				case 2:
+					HowToPlayScreen();
+					printSelectionScreen();
+					break;
+
+				case 3:
 					return false;
 				}
 			}
@@ -454,4 +460,27 @@ void Game::Start()
 	}
 
 	RestartLevel();
+}
+
+void Game::HowToPlayScreen()
+{
+	for (int i = 15; i > 0; i--)
+	{
+		system("cls");
+		std::cout << "//..................................................//" << std::endl;
+		std::cout << "//.................Welcome to 2dcg!.................//" << std::endl;
+		std::cout << "//..................................................//" << std::endl;
+		std::cout << "//............Use arrow buttons to navigate.........//" << std::endl;
+		std::cout << "//...................around the map.................//" << std::endl;
+		std::cout << "//..................................................//" << std::endl;
+		std::cout << "//............There are some special blocks.........//" << std::endl;
+		std::cout << "//.........that may damage your, give you gold......//" << std::endl;
+		std::cout << "//........or even teleport you to another room......//" << std::endl;
+		std::cout << "//..................................................//" << std::endl;
+		std::cout << "//...............You will be redirected.............//" <<std::endl;
+		std::cout << "//..............to the main screen in: " << i << ( i >= 10 ? "" : "." ) << "...........//" << std::endl; //11,41
+		std::cout << "//..................................................//" << std::endl;
+		std::cout << "//..................................................//" << std::endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
 }

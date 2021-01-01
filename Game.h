@@ -35,5 +35,6 @@ public:
 	void Move(const Position& direction);
 	void GameOver();
 	void RestartLevel();
+	void HowToPlayScreen();
 };
 
