@@ -49,15 +49,24 @@ bool Game::SelectionScreen()
 	bool keyPressed = false;
 
 	auto printSelectionScreen = [&selection, &levelIndex]() {
+		std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
+		std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
+		std::string selectedColor = "\u001b[32m\u001b[40m"; //green text, black background
+		std::string borderColor = "\u001b[37m\u001b[40m"; //white text, black background
+		std::string exitColor = "\u001b[31m\u001b[40m"; //red text, black bakcground
+		
 		system("cls");
-		std::cout << "//..........................................//" << std::endl;
-		std::cout << "//.................................Level:" << levelIndex << "..//" << std::endl;
-		std::cout << "//................." << (selection == 0 ? "[Start]" : ".Start.") << "..................//" << std::endl;
-		std::cout << "//............." << (selection == 1 ? "[Change level]" : ".Change level.") << "...............//" << std::endl;
-		std::cout << "//............." << (selection == 2 ? "[How to play?]" : ".How to play?.") << "...............//" << std::endl;
-		std::cout << "//................." << (selection == 3 ? "[Exit]" : ".Exit.") << "...................//" << std::endl;
-		std::cout << "//..........................................//" << std::endl;
-		std::cout << "//..........................................//" << std::endl;
+
+		std::cout << borderColor << "//////////////////////////////////////////////" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "................................." << textColor << "Level:" << levelIndex << backgroundColor << ".." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "................." << (selection == 0 ? selectedColor + "[Start]" : "." + textColor + "Start" + backgroundColor + ".") << backgroundColor << ".................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "............." << (selection == 1 ? selectedColor + "[Change level]" : "." + textColor + "Change level" + backgroundColor + ".") << backgroundColor << "..............." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "............." << (selection == 2 ? selectedColor + "[How to play?]" : "."+ textColor + "How to play?" + backgroundColor + ".") << backgroundColor << "..............." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "................." << (selection == 3 ? exitColor + "[Exit]" : "." + textColor + "Exit" + backgroundColor + ".") << backgroundColor << "..................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//////////////////////////////////////////////" << /* reset colors */ "\u001b[0m" << std::endl;
 	};
 	printSelectionScreen();
 
@@ -299,16 +308,26 @@ void Game::GameOver()
 	bool selected = false;
 	
 	//displaying
-	auto printGameOverScreen = [&selection]() {
+	auto printGameOverScreen = [this, &selection]() {
+		std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
+		std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
+		std::string selectedColor = "\u001b[32m\u001b[40m"; //green text, black background
+		std::string borderColor = "\u001b[37m\u001b[40m"; //white text, black background
+		std::string gameoverColor = "\u001b[31m\u001b[40m"; //red text, black bakcground
+		std::string exitColor = "\u001b[31m\u001b[40m"; //red text, black bakcground
+
 		system("cls");
-		std::cout << "//...........................................//" << std::endl;
-		std::cout << "//.................Game Over.................//" << std::endl;
-		std::cout << "//...........................................//" << std::endl;
-		std::cout << "//................." << (selection == 0 ? "[Restart]" : ".Restart.") << ".................//" << std::endl;
-		std::cout << "//.............." << (selection == 1 ? "[Start Screen]" : ".Start Screen.") << "...............//" << std::endl;
-		std::cout << "//.................." << (selection == 2 ? "[Quit]" : ".Quit.") << "...................//" << std::endl;
-		std::cout << "//...........................................//" << std::endl;
-		std::cout << "//...........................................//";
+
+		std::cout << borderColor << "///////////////////////////////////////////////" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "................."<< gameoverColor  << "Game Over" << backgroundColor << "................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "................." << (selection == 0 ? selectedColor + "[Restart]" : "." + textColor + "Restart" + backgroundColor + ".") << backgroundColor << "................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".............." << (selection == 1 ? selectedColor + "[Start Screen]" : "." + textColor + "Start Screen" + backgroundColor + ".") << backgroundColor << "..............." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................." << (selection == 2 ? exitColor + "[Exit]" : "." + textColor + "Exit" + backgroundColor + ".") << backgroundColor << "..................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "///////////////////////////////////////////////" << /* reset colors */ "\u001b[0m" << std::endl;
 	};
 
 	printGameOverScreen();
@@ -466,21 +485,29 @@ void Game::HowToPlayScreen()
 {
 	for (int i = 15; i > 0; i--)
 	{
+		std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
+		std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
+		std::string borderColor = "\u001b[37m\u001b[40m"; //white text, black background
+		std::string highlightColor = "\u001b[36m\u001b[40m"; //cyan text, black background
+
 		system("cls");
-		std::cout << "//..................................................//" << std::endl;
-		std::cout << "//.................Welcome to 2dcg!.................//" << std::endl;
-		std::cout << "//..................................................//" << std::endl;
-		std::cout << "//............Use arrow buttons to navigate.........//" << std::endl;
-		std::cout << "//...................around the map.................//" << std::endl;
-		std::cout << "//..................................................//" << std::endl;
-		std::cout << "//............There are some special blocks.........//" << std::endl;
-		std::cout << "//.........that may damage your, give you gold......//" << std::endl;
-		std::cout << "//........or even teleport you to another room......//" << std::endl;
-		std::cout << "//..................................................//" << std::endl;
-		std::cout << "//...............You will be redirected.............//" <<std::endl;
-		std::cout << "//..............to the main screen in: " << i << ( i >= 10 ? "" : "." ) << "...........//" << std::endl; //11,41
-		std::cout << "//..................................................//" << std::endl;
-		std::cout << "//..................................................//" << std::endl;
+
+		std::cout << borderColor << "//////////////////////////////////////////////////////" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "................." << textColor << "Welcome to " << highlightColor << "2dcg!" << backgroundColor << "................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "............" << textColor << "Use arrow buttons to navigate" << backgroundColor << "........." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..................." << textColor << "around the map" << backgroundColor << "................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "............" << textColor << "There are some special blocks" << backgroundColor << "........." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "........." << textColor << "that may damage your, give you gold" << backgroundColor << "......" << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "........" << textColor << "or even teleport you to another room" << backgroundColor << "......" << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..............." << textColor << "You will be redirected" << backgroundColor << "............." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".............." << textColor << "to the main screen in: " << highlightColor << i << ( i >= 10 ? "" : backgroundColor + "." ) << backgroundColor << "..........." << borderColor << "//" << std::endl; //11,41
+		std::cout << borderColor << "//" << backgroundColor << ".................................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//////////////////////////////////////////////////////" << /* reset colors */ "\u001b[0m" << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }

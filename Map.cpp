@@ -48,19 +48,19 @@ void Map::Load(std::istream& mapStream)
 
 				switch (option[0])
 				{
-				case 'c':
+				case 'c': //collidable
 					optionName = OPTION::COLLIDABLE;
 					break;
 
-				case 's':
+				case 's': //switch map
 					optionName = OPTION::SWITCH_MAP;
 					break;
 
-				case 'd':
+				case 'd': //damage
 					optionName = OPTION::DEAL_DMG;
 					break;
 
-				case 'g':
+				case 'g': //gold
 					optionName = OPTION::ADD_GOLD;
 					break;
 
