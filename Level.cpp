@@ -38,7 +38,7 @@ void Level::Load(std::istream& levelStream)
 	}
 
 	//player
-		//player body tiles number (tiles:) //[//tile character//collidable//x,y//] //...// hp//
+		//player body tiles number (tiles:) //[//tile character//collidable//x,y//] //...// hp // jump height //
 
 	std::string playerInput;
 	std::getline(levelStream, playerInput);
@@ -72,7 +72,13 @@ void Level::Load(std::istream& levelStream)
 		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
 	}
 
-	_player = new Player(body, maxHp);
+	int jumpHeight;
+	if (!(playerData >> jumpHeight))
+	{
+		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+	}
+
+	_player = new Player(body, maxHp, jumpHeight);
 	//...
 }
 

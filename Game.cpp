@@ -5,9 +5,6 @@ Game::Game(const std::vector<std::string>& filenames, const float& frameRate)
 	_levels = filenames;
 	_frameRate = frameRate;
 	_timer = new Timer();
-	_playerJumping = true;
-	_jumpingMaxFrame = 4;
-	_jumpingFrame = _jumpingMaxFrame + 1;
 }
 
 Game::~Game()
@@ -31,6 +28,7 @@ void Game::LoadLevel(const int& levelIndex)
 	{
 		_currentLevel = new Level(levelStream);
 		_playerJumping = true;
+		_jumpingMaxFrame = _currentLevel->GetPlayer()->GetJumpHeight();
 		_jumpingFrame = _jumpingMaxFrame + 1; // to prevent jumping if spawned in the air
 	}
 	else
