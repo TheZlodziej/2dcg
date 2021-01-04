@@ -5,6 +5,7 @@ Level::Level(std::istream& levelStream)
 	Load(levelStream);
 	LoadMap(0);
 	_gold = 0;
+	_ended = false;
 }
 
 Level::~Level()
@@ -144,4 +145,14 @@ void Level::AddGold(const int& amount)
 int Level::GetGold() const
 {
 	return _gold;
+}
+
+void Level::End()
+{
+	_ended = true;
+}
+
+bool Level::Ended() const
+{
+	return _ended;
 }

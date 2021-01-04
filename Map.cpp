@@ -64,6 +64,10 @@ void Map::Load(std::istream& mapStream)
 					optionName = OPTION::ADD_GOLD;
 					break;
 
+				case 'e': //exit level
+					optionName = OPTION::EXIT_LEVEL;
+					break;
+
 				case 'f':  //tile color
 					tileColor = Tile::TileColor(arguments[0]);
 					break;
@@ -82,7 +86,7 @@ void Map::Load(std::istream& mapStream)
 			
 			map[j][i] = EntityTile(tileData[0], { j, i }, options, tileColor, backgroundColor);
 
-			if (map[j][i].GetOption(OPTION::COLLIDABLE).optionName != OPTION::OPTION_ERROR)
+			if (map[j][i].GetOption(OPTION::COLLIDABLE).Good())
 			{
 				_collidingPositions.push_back({ j,i });
 			}

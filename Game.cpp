@@ -144,7 +144,7 @@ void Game::CheckOptions()
 			Option option;
 
 			option = tile.GetOption(OPTION::SWITCH_MAP);
-			if (option.optionName != OPTION::OPTION_ERROR)
+			if (option.Good())
 			{
 				Position newPlayerPosition = Position({ option.arguments[1], option.arguments[2] });
 				int newMapIndex = option.arguments[0];
@@ -153,18 +153,23 @@ void Game::CheckOptions()
 				Update({0,0});
 				_currentLevel->GetMap()->Show();
 				HUD();
-				//std::this_thread::sleep_for(std::chrono::milliseconds(100)); //so it doesn't bug
 			}
 
 			option = tile.GetOption(OPTION::DEAL_DMG);
-			if (option.optionName != OPTION::OPTION_ERROR)
+			if (option.Good())
 			{
 				_currentLevel->GetPlayer()->LoseHp(option.arguments[0]);
+
+				if (_currentLevel->GetPlayer()->Dead())
+				{
+					_currentLevel->End();
+				}
+
 				HUD();
 			}
 
 			option = tile.GetOption(OPTION::ADD_GOLD);
-			if (option.optionName != OPTION::OPTION_ERROR)
+			if (option.Good())
 			{
 				_currentLevel->AddGold(option.arguments[0]);
 				HUD();
@@ -179,6 +184,12 @@ void Game::CheckOptions()
 				_currentLevel->GetMap()->SetTileBackgroundColorAt(tile.GetPosition(), newBackgroundColor);
 
 				_currentLevel->AssignOptionTiles();
+			}
+
+			option = tile.GetOption(OPTION::EXIT_LEVEL);
+			if (option.Good())
+			{
+				_currentLevel->End();
 			}
 		}
 	}
@@ -298,7 +309,7 @@ void Game::Move(const Position& direction)
 	}
 }
 
-void Game::GameOver()
+void Game::LostScreen()
 {
 	int selection = 0; // selection: 0=restart; 1=quit
 	int optionsNumber = 3;
@@ -381,7 +392,7 @@ void Game::GameOver()
 
 void Game::GameLoop()
 {
-	while (!_currentLevel->GetPlayer()->Dead())
+	while (!_currentLevel->Ended())
 	{
 		_timer->Tick();
 		
@@ -397,7 +408,14 @@ void Game::GameLoop()
 		}
 	}
 
-	GameOver();
+	if (_currentLevel->GetPlayer()->Dead())
+	{
+		LostScreen();
+	}
+	else
+	{
+		WonScreen();
+	}
 }
 
 void Game::HUD()
@@ -508,4 +526,25 @@ void Game::HowToPlayScreen()
 		std::cout << borderColor << "//////////////////////////////////////////////////////" << /* reset colors */ "\u001b[0m" << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
+}
+
+void Game::WonScreen()
+{
+	//make this screen pretty
+	for (int i=15; i>0; i--)
+	{
+		system("cls");
+		std::cout << "//........................................//" << std::endl;
+		std::cout << "//........................................//" << std::endl;
+		std::cout << "//................You Won!................//" << std::endl;
+		std::cout << "//...............Your Gold: "<< _currentLevel->GetGold() << ".............//" << std::endl; //make it a for loop so the width is constant
+		std::cout << "//..........You will be redirected........//" << std::endl;
+		std::cout << "//.........to the start screen in "<< i << (i>=10 ? "" : "." )<<"......//" << std::endl;
+		std::cout << "//........................................//" << std::endl;
+		std::cout << "//........................................//" << std::endl;
+		std::cout << "//........................................//" << std::endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
+
+	Start();
 }

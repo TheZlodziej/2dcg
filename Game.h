@@ -33,8 +33,9 @@ public:
 	void ApplyGravity();
 	void Jump();
 	void Move(const Position& direction);
-	void GameOver();
+	void LostScreen();
 	void RestartLevel();
 	void HowToPlayScreen();
+	void WonScreen();
 };
 

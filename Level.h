@@ -15,6 +15,7 @@ private:
 	Player* _player = nullptr;
 	std::vector<EntityTile> _optionTiles;
 	int _gold;
+	bool _ended;
 
 public:
 
@@ -28,5 +29,7 @@ public:
 	std::vector<EntityTile> GetOptionTiles() const;
 	void AddGold(const int& amount);
 	int GetGold() const;
+	void End();
+	bool Ended() const;
 };
 
