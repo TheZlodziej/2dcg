@@ -37,5 +37,6 @@ public:
 	void RestartLevel();
 	void HowToPlayScreen();
 	void WonScreen();
+	int Digits(int number); //returns the length of number (necessary for displaying numbers [to make it look pretty])
 };
 

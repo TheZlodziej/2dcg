@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-enum class OPTION {OPTION_ERROR=-1, COLLIDABLE=0, SWITCH_MAP=1, DEAL_DMG=2, ADD_GOLD=3, EXIT_LEVEL=4};
+enum class OPTION {OPTION_ERROR=-1, COLLIDABLE=0, SWITCH_MAP=1, DEAL_DMG=2, ADD_SCORE=3, EXIT_LEVEL=4};
 
 struct Option
 {

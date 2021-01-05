@@ -14,7 +14,7 @@ private:
 	int _currentMapIndex;
 	Player* _player = nullptr;
 	std::vector<EntityTile> _optionTiles;
-	int _gold;
+	int _score;
 	bool _ended;
 
 public:
@@ -27,8 +27,8 @@ public:
 	Map* GetMap();
 	void AssignOptionTiles();
 	std::vector<EntityTile> GetOptionTiles() const;
-	void AddGold(const int& amount);
-	int GetGold() const;
+	void AddScore(const int& amount);
+	int GetScore() const;
 	void End();
 	bool Ended() const;
 };

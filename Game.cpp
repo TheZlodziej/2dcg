@@ -146,7 +146,7 @@ void Game::CheckOptions()
 			{
 				Position newPlayerPosition = Position({ option.arguments[1], option.arguments[2] });
 				int newMapIndex = option.arguments[0];
-				_currentLevel->LoadMap(newMapIndex); //option.arguments[0]
+				_currentLevel->LoadMap(newMapIndex);
 				_currentLevel->GetPlayer()->SetPosition(newPlayerPosition);
 				Update({0,0});
 				_currentLevel->GetMap()->Show();
@@ -166,10 +166,10 @@ void Game::CheckOptions()
 				HUD();
 			}
 
-			option = tile.GetOption(OPTION::ADD_GOLD);
+			option = tile.GetOption(OPTION::ADD_SCORE);
 			if (option.Good())
 			{
-				_currentLevel->AddGold(option.arguments[0]);
+				_currentLevel->AddScore(option.arguments[0]);
 				HUD();
 
 				//change to different tile in original map & remove gold option
@@ -177,7 +177,7 @@ void Game::CheckOptions()
 				int newTileColor = option.arguments[2];
 				int newBackgroundColor = option.arguments[3];
 				_currentLevel->GetMap()->SetCharacterAt(tile.GetPosition(), newCharacter);
-				_currentLevel->GetMap()->RemoveOptionAt(tile.GetPosition(), OPTION::ADD_GOLD);
+				_currentLevel->GetMap()->RemoveOptionAt(tile.GetPosition(), OPTION::ADD_SCORE);
 				_currentLevel->GetMap()->SetTileColorAt(tile.GetPosition(), newTileColor);
 				_currentLevel->GetMap()->SetTileBackgroundColorAt(tile.GetPosition(), newBackgroundColor);
 
@@ -203,7 +203,7 @@ void Game::ApplyGravity()
 	if (MovePossible(playerPositions, direction))
 	{
 		Update(direction);
-		if (!_playerJumping) //prevents jumping after starting falling
+		if (!_playerJumping) //prevents jumping after started falling
 		{
 			_playerJumping = true;
 			_jumpingFrame = _jumpingMaxFrame + 1;
@@ -423,62 +423,50 @@ void Game::GameLoop()
 
 void Game::HUD()
 {
+	std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
+	std::string backgroundColor = "\u001b[30m\u001b[40m"; //black text, black bakcground
+	std::string heartsColor = "\u001b[31m\u001b[40m"; //red text, black background
+	std::string scoreColor = "\u001b[33m\u001b[40m"; //yellow text, black bakcground
+
 	int mapHeight = _currentLevel->GetMap()->GetHeight();
 	int mapWidth = _currentLevel->GetMap()->GetWidth();
 	int maxHp = _currentLevel->GetPlayer()->MaxHp();
 	int Hp = _currentLevel->GetPlayer()->Hp();
-	int gold = _currentLevel->GetGold();
+	int score = _currentLevel->GetScore();
 
 	//clear HUD
 	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
 
 	for (int i = 0; i < mapWidth + 2 * maxHp; i++)
 	{
-		std::cout << " ";
+		std::cout << backgroundColor << ".";
 	}
 
 	//draw new HUD data
 	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
 
 	//gold
-	std::cout << "\u001b[37mGold: \u001b[33m" << gold << " "; //white and yellow colors
-
-	auto digits = [](int number) {
-		int numberOfDigits = 0;
-
-		if (number < 0)
-		{
-			number = -number;
-			numberOfDigits++;
-		}
-
-		while (number > 0)
-		{
-			number /= 10;
-			numberOfDigits++;
-		}
-		return numberOfDigits;
-	};
+	std::cout << textColor << "Score:" << backgroundColor << "." << scoreColor << score << backgroundColor << ".";
 
 	//hearts
-	for (int i = 0; i < mapWidth - 2 * maxHp - 7 /* Hearts: - 7 chars */- 6 /* Gold: - 6 chars */ - digits(gold) - 1 /* 1 minimum space char */; i++)
+	for (int i = 0; i < mapWidth - 2 * maxHp - 7 /* Hearts: - 7 chars */- 7 /* Score: - 7 chars */ - Digits(score) - 1 /* 1 minimum space char */; i++)
 	{
-		std::cout << " ";
+		std::cout << backgroundColor << ".";
 	}
 
-	std::cout << "\u001b[37mHearts:\u001b[31m"; //red color
+	std::cout << textColor << "Hearts:"; //red color
 	for (int i = 0; i < Hp; i++)
 	{
-		std::cout << " *";
+		std::cout << backgroundColor << "." << heartsColor << "*";
 	}
-	std::cout << "\u001b[37m"; //white color
+	std::cout << textColor;
 	for (int i = 0; i < maxHp - Hp; i++)
 	{
-		std::cout << " _";
+		std::cout << backgroundColor << "." << textColor << "_";
 	}
 
 	//level info
-	std::cout << "\n\nLevel: (" << _currentLevelIndex << ") [" << _levels[_currentLevelIndex] << "]";
+	std::cout << textColor << "\n\nLevel: (" << _currentLevelIndex << ") [" << _levels[_currentLevelIndex] << "]";
 }
 
 void Game::RestartLevel()
@@ -533,21 +521,59 @@ void Game::HowToPlayScreen()
 
 void Game::WonScreen()
 {
-	//make this screen pretty
+	std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
+	std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
+	std::string borderColor = "\u001b[37m\u001b[40m"; //white text, black background
+	std::string highlightColor = "\u001b[36m\u001b[40m"; //cyan text, black background
+	std::string scoreColor = "\u001b[33m\u001b[40m"; //yellow text, black background
+
 	for (int i=15; i>0; i--)
 	{
 		system("cls");
-		std::cout << "//........................................//" << std::endl;
-		std::cout << "//........................................//" << std::endl;
-		std::cout << "//................You Won!................//" << std::endl;
-		std::cout << "//...............Your Gold: "<< _currentLevel->GetGold() << ".............//" << std::endl; //make it a for loop so the width is constant
-		std::cout << "//..........You will be redirected........//" << std::endl;
-		std::cout << "//.........to the start screen in "<< i << (i>=10 ? "" : "." )<<"......//" << std::endl;
-		std::cout << "//........................................//" << std::endl;
-		std::cout << "//........................................//" << std::endl;
-		std::cout << "//........................................//" << std::endl;
+		std::cout << borderColor << "///////////////////////////////////////////////" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".................." << highlightColor << "You Won!" << backgroundColor << "................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl; 
+		
+		//gold
+		int score = _currentLevel->GetScore();
+
+		std::cout << borderColor << "//" << backgroundColor << ".............." << textColor << "Your Score: " << scoreColor << score << backgroundColor;
+		
+		for (int i = 0; i < 17 - Digits(score); i++) 
+		{ 
+			std::cout << "."; 
+		} 
+
+		std::cout << borderColor << "//" << std::endl; 
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........." << textColor << "You will be redirected" << backgroundColor << ".........." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << ".........." << textColor << "to the start screen in "<< highlightColor << i << backgroundColor << (i>=10 ? "" : "." )<<"........" << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "//" << backgroundColor << "..........................................." << borderColor << "//" << std::endl;
+		std::cout << borderColor << "///////////////////////////////////////////////" << /* reset colors */ "\u001b[0m" << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 
 	Start();
+}
+
+int Game::Digits(int number)
+{
+	int numberOfDigits = 0;
+
+	if (number < 0)
+	{
+		number = -number;
+		numberOfDigits++;
+	}
+
+	while (number > 0)
+	{
+		number /= 10;
+		numberOfDigits++;
+	}
+	return numberOfDigits;
 }

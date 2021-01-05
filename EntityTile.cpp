@@ -25,7 +25,7 @@ std::vector<Option> EntityTile::GetOptions() const
 
 void EntityTile::RemoveOption(const OPTION& optionName)
 {
-	for (int i = 0; i < _options.size(); i++)
+	for (int i = 0; i < static_cast<int>(_options.size()); i++)
 	{
 		if (_options[i].optionName == optionName)
 		{

@@ -60,8 +60,8 @@ void Map::Load(std::istream& mapStream)
 					optionName = OPTION::DEAL_DMG;
 					break;
 
-				case 'g': //gold
-					optionName = OPTION::ADD_GOLD;
+				case 'g': //score (gold)
+					optionName = OPTION::ADD_SCORE;
 					break;
 
 				case 'e': //exit level

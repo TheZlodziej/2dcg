@@ -4,7 +4,7 @@ Level::Level(std::istream& levelStream)
 {
 	Load(levelStream);
 	LoadMap(0);
-	_gold = 0;
+	_score = 0;
 	_ended = false;
 }
 
@@ -16,15 +16,9 @@ Level::~Level()
 
 void Level::Load(std::istream& levelStream)
 {
-
 	// maps number
 	// map path
 	// player
-	// ...
-
-	//map
-		//maps number
-		//maps paths
 
 	std::string mapsNumberLine;
 	std::getline(levelStream, mapsNumberLine);
@@ -137,14 +131,14 @@ std::vector<EntityTile> Level::GetOptionTiles() const
 	return _optionTiles;
 }
 
-void Level::AddGold(const int& amount)
+void Level::AddScore(const int& amount)
 {
-	_gold += amount;
+	_score += amount;
 }
 
-int Level::GetGold() const
+int Level::GetScore() const
 {
-	return _gold;
+	return _score;
 }
 
 void Level::End()
