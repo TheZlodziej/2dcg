@@ -181,7 +181,7 @@ int Map::GetWidth() const
 	return _width;
 }
 
-void Map::GotoPosition(const Position& position) const
+void Map::GotoPosition(const Position& position)
 {
 	COORD coord = { static_cast<short>(position.x), static_cast<short>(position.y) };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);

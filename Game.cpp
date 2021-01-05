@@ -435,7 +435,7 @@ void Game::HUD()
 	int score = _currentLevel->GetScore();
 
 	//clear HUD
-	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
+	Map::GotoPosition({ 0, mapHeight + 1 });
 
 	for (int i = 0; i < mapWidth + 2 * maxHp; i++)
 	{
@@ -443,7 +443,7 @@ void Game::HUD()
 	}
 
 	//draw new HUD data
-	_currentLevel->GetMap()->GotoPosition({ 0, mapHeight + 1 });
+	Map::GotoPosition({ 0, mapHeight + 1 });
 
 	//gold
 	std::cout << textColor << "Score:" << backgroundColor << "." << scoreColor << score << backgroundColor << ".";
@@ -541,7 +541,7 @@ void Game::WonScreen()
 
 		std::cout << borderColor << "//" << backgroundColor << ".............." << textColor << "Your Score: " << scoreColor << score << backgroundColor;
 		
-		for (int i = 0; i < 17 - Digits(score); i++) 
+		for (int i = 0; i < 18 - Digits(score); i++) 
 		{ 
 			std::cout << "."; 
 		} 
@@ -562,7 +562,7 @@ void Game::WonScreen()
 
 int Game::Digits(int number)
 {
-	int numberOfDigits = 0;
+	int numberOfDigits = 1;
 
 	if (number < 0)
 	{
@@ -575,5 +575,6 @@ int Game::Digits(int number)
 		number /= 10;
 		numberOfDigits++;
 	}
+
 	return numberOfDigits;
 }

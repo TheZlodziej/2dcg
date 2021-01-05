@@ -3,9 +3,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <Windows.h>
+#include <iostream>
+
 #include "EntityTile.h"
 #include "Exception.h"
-#include <iostream>
 
 class Map
 {
@@ -30,7 +32,7 @@ public:
 	bool InBoundings(const Position& position) const;
 	int GetHeight() const;
 	int GetWidth() const;
-	void GotoPosition(const Position& position) const;
+	static void GotoPosition(const Position& position);
 	void Draw(const EntityTile& tile) const;
 	void Show();
 	void SetCharacterAt(const Position& position, const char& character); //sets original character at position to given character
