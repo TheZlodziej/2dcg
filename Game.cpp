@@ -27,9 +27,7 @@ void Game::LoadLevel(const int& levelIndex)
 	if (levelStream.good())
 	{
 		_currentLevel = new Level(levelStream);
-		_playerJumping = true;
 		_jumpingMaxFrame = _currentLevel->GetPlayer()->GetJumpHeight();
-		_jumpingFrame = _jumpingMaxFrame + 1; // to prevent jumping if spawned in the air
 	}
 	else
 	{
@@ -205,6 +203,11 @@ void Game::ApplyGravity()
 	if (MovePossible(playerPositions, direction))
 	{
 		Update(direction);
+		if (!_playerJumping) //prevents jumping after starting falling
+		{
+			_playerJumping = true;
+			_jumpingFrame = _jumpingMaxFrame + 1;
+		}
 	}
 	else
 	{
@@ -317,7 +320,7 @@ void Game::LostScreen()
 	bool selected = false;
 	
 	//displaying
-	auto printGameOverScreen = [this, &selection]() {
+	auto printGameOverScreen = [&selection]() {
 		std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
 		std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
 		std::string selectedColor = "\u001b[32m\u001b[40m"; //green text, black background
@@ -499,13 +502,13 @@ void Game::Start()
 
 void Game::HowToPlayScreen()
 {
+	std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
+	std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
+	std::string borderColor = "\u001b[37m\u001b[40m"; //white text, black background
+	std::string highlightColor = "\u001b[36m\u001b[40m"; //cyan text, black background
+
 	for (int i = 15; i > 0; i--)
 	{
-		std::string backgroundColor = "\u001b[30m\u001b[40m"; // black background, black text
-		std::string textColor = "\u001b[37m\u001b[40m"; //white text, black background
-		std::string borderColor = "\u001b[37m\u001b[40m"; //white text, black background
-		std::string highlightColor = "\u001b[36m\u001b[40m"; //cyan text, black background
-
 		system("cls");
 
 		std::cout << borderColor << "//////////////////////////////////////////////////////" << std::endl;
