@@ -90,6 +90,7 @@ bool Game::SelectionScreen()
 			// enter
 			else if (GetAsyncKeyState(VK_RETURN) and 0x0D)
 			{
+				Sound::Play(Sound::GetSoundFilename(SOUND::SELECT));
 				keyPressed = true;
 				switch (selection)
 				{
@@ -114,6 +115,7 @@ bool Game::SelectionScreen()
 
 			if (keyPressed)
 			{
+				Sound::Play(Sound::GetSoundFilename(SOUND::SELECT));
 				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				keyPressed = false;
 			}
@@ -156,6 +158,7 @@ void Game::CheckOptions()
 			option = tile.GetOption(OPTION::DEAL_DMG);
 			if (option.Good())
 			{
+				Sound::Play(Sound::GetSoundFilename(SOUND::DEAL_DMG));
 				_currentLevel->GetPlayer()->LoseHp(option.arguments[0]);
 
 				if (_currentLevel->GetPlayer()->Dead())
@@ -169,7 +172,18 @@ void Game::CheckOptions()
 			option = tile.GetOption(OPTION::ADD_SCORE);
 			if (option.Good())
 			{
-				_currentLevel->AddScore(option.arguments[0]);
+				int score = option.arguments[0];
+				if (score >= 0)
+				{
+					Sound::Play(Sound::GetSoundFilename(SOUND::ADD_SCORE_G));
+				} 
+				
+				else
+				{
+					Sound::Play(Sound::GetSoundFilename(SOUND::ADD_SCORE_B));
+				}
+
+				_currentLevel->AddScore(score);
 				HUD();
 
 				//change to different tile in original map & remove gold option
@@ -238,13 +252,13 @@ void Game::KeyboardInput(Position& direction)
 		if (!_playerJumping)
 		{
 			_playerJumping = true;
+			Sound::Play(Sound::GetSoundFilename(SOUND::JUMP));
 		}
 	}
 
 	if (GetAsyncKeyState(VK_DOWN) and 0x28)
 	{
 		//down arrow
-		direction.y = 1;
 	}
 
 	if (GetAsyncKeyState(VK_RIGHT) and 0x27)
@@ -296,7 +310,7 @@ void Game::Jump()
 			}
 		}
 	}
-}
+} 
 
 void Game::Move(const Position& direction)
 {
@@ -367,11 +381,13 @@ void Game::LostScreen()
 			// enter
 			else if (GetAsyncKeyState(VK_RETURN) and 0x0D)
 			{
+				Sound::Play(Sound::GetSoundFilename(SOUND::SELECT));
 				selected = true;
 			}
 
 			if (keyPressed)
 			{
+				Sound::Play(Sound::GetSoundFilename(SOUND::SELECT));
 				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				keyPressed = false;
 			}

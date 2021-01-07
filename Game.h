@@ -5,6 +5,7 @@
 #include <chrono>
 #include "Level.h"
 #include "Timer.h"
+#include "Sound.h"
 
 class Game
 {

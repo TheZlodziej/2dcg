@@ -8,6 +8,7 @@
 // #2 - invalid index
 // #3 - invalid color
 // #4 - invalid option
+// #5 - invalid sound file
 
 class Exception
 {
