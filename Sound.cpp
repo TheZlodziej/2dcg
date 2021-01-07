@@ -1,5 +1,6 @@
 #include "Sound.h"
 
+#include <thread>
 void Sound::Play(const std::string& filename, const HMODULE& hmod, const DWORD& fdwSound)
 {
 	//convert std::string to LPCWSTR
@@ -35,6 +36,12 @@ std::string Sound::GetSoundFilename(SOUND soundName)
 
 	case SOUND::SELECT:
 		return "sounds/select.wav";
+
+	case SOUND::WIN:
+		return "sounds/win.wav";
+
+	case SOUND::LOSE:
+		return "sounds/lose.wav";
 
 	default:
 		throw new Exception(5, "[SOUND] Unknown sound name.");

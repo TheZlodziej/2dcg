@@ -3,7 +3,7 @@
 #include <string>
 #include "Exception.h"
 
-enum class SOUND { JUMP = 0, ADD_SCORE_G =  1, ADD_SCORE_B = 2,  DEAL_DMG = 3, SELECT = 4 };
+enum class SOUND { JUMP = 0, ADD_SCORE_G =  1, ADD_SCORE_B = 2,  DEAL_DMG = 3, SELECT = 4, WIN = 5, LOSE = 6 };
 
 struct Sound
 {

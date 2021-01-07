@@ -429,10 +429,12 @@ void Game::GameLoop()
 
 	if (_currentLevel->GetPlayer()->Dead())
 	{
+		Sound::Play(Sound::GetSoundFilename(SOUND::LOSE));
 		LostScreen();
 	}
 	else
 	{
+		Sound::Play(Sound::GetSoundFilename(SOUND::WIN));
 		WonScreen();
 	}
 }
