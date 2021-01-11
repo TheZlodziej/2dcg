@@ -8,6 +8,8 @@ Tile::Tile(const char& character, const Position& position, const std::string& t
 	_backgroundColor = backgroundColor;
 }
 
+Tile::~Tile() {}
+
 char Tile::GetCharacter() const 
 { 
 	return _character; 

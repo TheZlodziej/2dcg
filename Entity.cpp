@@ -6,6 +6,8 @@ Entity::Entity(const std::vector<EntityTile>& body)
 	SetCollidingPositions();
 }
 
+Entity::~Entity() {}
+
 void Entity::SetCollidingPositions()
 {
 	_collidingPositions = {};

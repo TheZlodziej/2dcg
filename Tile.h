@@ -12,6 +12,7 @@ protected:
 
 public:
 	Tile(const char& character, const Position& position, const std::string& tileColor="\u001b[37m" /*white*/, const std::string& backgroundColor="\u001b[30m"/*black*/);
+	virtual ~Tile();
 	char GetCharacter() const;
 	void SetCharacter(const char& newCharacter);
 	Position GetPosition() const;

@@ -11,6 +11,7 @@ protected:
 
 public:
 	Entity(const std::vector<EntityTile>& body);
+	virtual ~Entity();
 	std::vector<Position> GetCollidingPositions() const;
 	void SetCollidingPositions();
 	bool CollidingWith(const std::vector<Position>& positions) const;

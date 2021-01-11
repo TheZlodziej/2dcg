@@ -5,6 +5,8 @@ EntityTile::EntityTile(const char& character, const Position& position, const st
 	_options = options;
 }
 
+EntityTile::~EntityTile() {}
+
 Option EntityTile::GetOption(const OPTION& optionName) const
 {
 	for (const Option& option : _options)

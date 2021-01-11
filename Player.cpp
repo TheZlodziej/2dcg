@@ -9,6 +9,8 @@ Player::Player(const std::vector<EntityTile>& body, const int& maxHp, const int&
 	_jumpHeight = jumpHeight;
 }
 
+Player::~Player() {}
+
 void Player::LoseHp(const int& amount)
 {
 	_currentHp -= amount;

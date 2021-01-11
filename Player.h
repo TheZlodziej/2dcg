@@ -13,6 +13,7 @@ protected:
 
 public:
 	Player(const std::vector<EntityTile>& body, const int& maxHp, const int& jumpHeight);
+	virtual ~Player();
 	void LoseHp(const int& amount);
 	void Die();
 	bool Dead() const;
