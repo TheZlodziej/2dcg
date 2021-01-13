@@ -2,9 +2,9 @@
 
 int main()
 {
-	try 
+	try
 	{
-		Game game = Game({ "levels/level1.level", "levels/level2.level" });
+		Game game = Game({ "levels/level1.level" });
 		game.Start();
 	}
 	catch (Exception* exception)

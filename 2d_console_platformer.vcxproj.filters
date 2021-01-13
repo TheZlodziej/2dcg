@@ -103,5 +103,6 @@
     <None Include="map1.map">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="maps\map1.2.map" />
   </ItemGroup>
 </Project>

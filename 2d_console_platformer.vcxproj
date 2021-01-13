@@ -173,6 +173,7 @@
     <None Include="level2.level" />
     <None Include="map1.map" />
     <None Include="map2.map" />
+    <None Include="maps\map1.2.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

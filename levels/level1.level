@@ -1,5 +1,6 @@
-2
-maps/map1.map
-maps/map2.map
-4 [o0,0] [o0,1] [o0,2] [o1,1] 10 4
-0
+4
+maps/map1.1.map
+maps/map1.2.map
+maps/map1.3.map
+maps/map1.4.map
+6 [03,2] [\4,3] [/2,3] [|3,3] [/2,4] [\4,4] 10 4
