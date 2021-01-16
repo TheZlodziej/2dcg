@@ -33,7 +33,7 @@ void Level::Load(std::istream& levelStream)
 	}
 
 	//player
-		//player body tiles number (tiles:) //[//tile character//collidable//x,y//] //...// hp // jump height //
+		//player color player body tiles number (tiles:) //[//tile character//collidable//x,y//] //...// hp // jump height //
 
 	std::string playerInput;
 	std::getline(levelStream, playerInput);

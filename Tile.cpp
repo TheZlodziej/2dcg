@@ -68,6 +68,12 @@ std::string Tile::TileColor(const int& color)
 	case 7: //white
 		return "\u001b[37m";
 
+	case 8: //brown
+		return "\u001b[38;5;130m";
+
+	case 9: //light blue
+		return "\u001b[38;5;45m";
+
 	default:
 		throw new Exception(3, "[TILE BACKGROUND COLOR] invalid tile background color.");
 		break;
@@ -101,6 +107,12 @@ std::string Tile::BackgroundColor(const int& color)
 
 	case 7: //white
 		return "\u001b[47m";
+
+	case 8: //brown
+		return "\u001b[48;5;130m";
+
+	case 9: //light blue
+		return "\u001b[48;5;45m";
 
 	default:
 		throw new Exception(3, "[TILE BACKGROUND COLOR] invalid tile background color.");

@@ -104,5 +104,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="maps\map1.2.map" />
+    <None Include="maps\map2.1.map" />
+    <None Include="maps\map2.2.map" />
+    <None Include="maps\map2.3.map" />
+    <None Include="levels\level2.level" />
   </ItemGroup>
 </Project>

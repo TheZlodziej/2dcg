@@ -1,9 +1,10 @@
-﻿  main.cpp
-C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\main.cpp(7,22): warning C4129: 'l': unrecognized character escape sequence
-C:\Users\TheZl\source\repos\2d_console_platformer\2d_console_platformer\main.cpp(7,52): warning C4129: 'l': unrecognized character escape sequence
+﻿  Game.cpp
+  Level.cpp
+  Player.cpp
+  main.cpp
   Generating code
-  1 of 952 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  0 of 952 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2d_console_platformer.vcxproj -> C:\Users\TheZl\source\repos\2d_console_platformer\Release\2d_console_platformer.exe
