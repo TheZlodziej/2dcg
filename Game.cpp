@@ -19,7 +19,7 @@ void Game::LoadLevel(const int& levelIndex)
 	
 	if (_currentLevelIndex >= int(_levels.size()) or _currentLevelIndex < 0)
 	{
-		throw new Exception(3, "[LEVEL] level index out of size.");
+		throw new Exception(3, "[LEVEL] (input) level index out of size.");
 	}
 
 	std::ifstream levelStream(_levels[_currentLevelIndex]);
@@ -434,6 +434,23 @@ void Game::GameLoop()
 	}
 	else
 	{
+		if (_currentLevel->GetScore() > _currentLevel->GetHighscore())
+		{
+			std::fstream levelStream;
+			levelStream.open(_levels[_currentLevelIndex], std::ios::in | std::ios::out);
+			if (levelStream.good())
+			{
+				_currentLevel->SetHighscore(levelStream);
+			}
+			
+			else
+			{
+				throw new Exception(1, "[LEVEL] (output) file open error");
+			}
+			
+			levelStream.close();
+		}
+		
 		Sound::Play(Sound::GetSoundFilename(SOUND::WIN));
 		WonScreen();
 	}
@@ -451,6 +468,7 @@ void Game::HUD()
 	int maxHp = _currentLevel->GetPlayer()->MaxHp();
 	int Hp = _currentLevel->GetPlayer()->Hp();
 	int score = _currentLevel->GetScore();
+	int highscore = _currentLevel->GetHighscore();
 
 	//clear HUD
 	Map::GotoPosition({ 0, mapHeight + 1 });
@@ -463,7 +481,7 @@ void Game::HUD()
 	//draw new HUD data
 	Map::GotoPosition({ 0, mapHeight + 1 });
 
-	//gold
+	//score
 	std::cout << textColor << "Score:" << backgroundColor << "." << scoreColor << score << backgroundColor << ".";
 
 	//hearts
@@ -482,6 +500,9 @@ void Game::HUD()
 	{
 		std::cout << backgroundColor << "." << textColor << "_";
 	}
+
+	//highscore
+	std::cout << textColor << "\n\nHighscore:" << scoreColor << ((score > highscore) ? score : highscore);
 
 	//level info
 	std::cout << textColor << "\n\nLevel: (" << _currentLevelIndex << ") [" << _levels[_currentLevelIndex] << "]";

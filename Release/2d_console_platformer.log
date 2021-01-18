@@ -1,10 +1,9 @@
 ﻿  Game.cpp
   Level.cpp
-  Player.cpp
   main.cpp
   Generating code
-  0 of 952 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  11 of 966 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    17 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2d_console_platformer.vcxproj -> C:\Users\TheZl\source\repos\2d_console_platformer\Release\2d_console_platformer.exe

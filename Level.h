@@ -16,6 +16,7 @@ private:
 	std::vector<EntityTile> _optionTiles;
 	int _score;
 	bool _ended;
+	int _highscore;
 
 public:
 
@@ -31,5 +32,7 @@ public:
 	int GetScore() const;
 	void End();
 	bool Ended() const;
+	int GetHighscore() const;
+	void SetHighscore(std::iostream& levelStream);
 };
 

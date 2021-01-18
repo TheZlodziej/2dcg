@@ -108,5 +108,6 @@
     <None Include="maps\map2.2.map" />
     <None Include="maps\map2.3.map" />
     <None Include="levels\level2.level" />
+    <None Include="levels\level1.level" />
   </ItemGroup>
 </Project>

@@ -42,7 +42,7 @@ void Level::Load(std::istream& levelStream)
 	int bodyTilesNumber;
 	if (!(playerData >> bodyTilesNumber))
 	{
-		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+		throw new Exception(0, "[LEVEL] (0) invalid file input - not enough player data.");
 	}
 
 	std::vector<EntityTile> body;
@@ -52,7 +52,7 @@ void Level::Load(std::istream& levelStream)
 		
 		if (!(playerData >> playerTileData))
 		{
-			throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+			throw new Exception(0, "[LEVEL] (1) invalid file input - not enough player data.");
 		}
 
 		char character = playerTileData[1];
@@ -64,17 +64,29 @@ void Level::Load(std::istream& levelStream)
 	int maxHp;
 	if (!(playerData >> maxHp))
 	{
-		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+		throw new Exception(0, "[LEVEL] (2) invalid file input - not enough player data.");
 	}
 
 	int jumpHeight;
 	if (!(playerData >> jumpHeight))
 	{
-		throw new Exception(0, "[LEVEL] invalid file input - not enough player data.");
+		throw new Exception(0, "[LEVEL] (3) invalid file input - not enough player data.");
 	}
 
 	_player = new Player(body, maxHp, jumpHeight);
-	//...
+	
+	//highscore
+	std::string scoreInput;
+	std::getline(levelStream, scoreInput);
+	std::stringstream scoreData(scoreInput);
+
+	int highscore;
+	if (!(scoreData >> highscore))
+	{
+		throw new Exception(0, "[LEVEL] (4) invalid file input - not enough level data");
+	}
+
+	_highscore = highscore;
 }
 
 void Level::LoadMap(const int& mapIndex)
@@ -149,4 +161,36 @@ void Level::End()
 bool Level::Ended() const
 {
 	return _ended;
+}
+
+int Level::GetHighscore() const
+{
+	return _highscore;
+}
+
+void Level::SetHighscore(std::iostream& levelStream)
+{
+	_highscore = _score;
+	std::string lines;
+	std::getline(levelStream, lines);
+
+	std::vector<std::string> fileData;
+
+	for (int i = 0; i <= /*for player data too*/ std::stoi(lines); i++)
+	{
+		std::string temp;
+		std::getline(levelStream, temp);
+		fileData.push_back(temp);
+	}
+
+	//write to file
+	levelStream.clear();
+	levelStream.seekg(0, std::ios::beg);
+
+	levelStream << (lines + "\n");
+	for (const std::string& line : fileData)
+	{
+		levelStream << (line + "\n");
+	}
+	levelStream << _highscore;
 }
