@@ -34,3 +34,4 @@ maps/map1.4.map
 ## Screenshots of the game:
 ![](screenshots/screenshot1.png)
 ![](screenshots/screenshot2.png)
+![](screenshots/screenshot3.png)
